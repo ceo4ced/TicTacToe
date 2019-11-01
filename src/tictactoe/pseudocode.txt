@@ -1,0 +1,92 @@
+Pseudocode for Minimax & Probability Table
+
+HOW MINIMAX WORKS:
+Minimax algorithm uses recursion to search throuhg game-tree
+The algorithm computes the minimax decision for the current state
+The algorithm performs a depth-first search algorithm for the exploration of the complete game tree
+The algorithm proceeds all the way down terminal node of tree, then backtrack the tree as the recursion
+
+findBestMove() function will use minimax() and return the best move the maximizer can make
+
+
+
+
+Pseudocode for findBestMove():
+
+function findBestMove(board):
+    bestMove = NULL
+    for each move in board :
+        if current move is better than bestMove
+            bestMove = current move
+    return bestMove
+
+
+
+
+Pseudocode for MiniMax():
+
+function minimax(board, depth, isMaximizingPlayer):
+
+    if current board state is a terminal state :
+        return value of the board
+    
+    if isMaximizingPlayer :
+        bestVal = -INFINITY 
+        for each move in board :
+            value = minimax(board, depth+1, false)
+            bestVal = max( bestVal, value) 
+        return bestVal
+
+    else :
+        bestVal = +INFINITY 
+        for each move in board :
+            value = minimax(board, depth+1, true)
+            bestVal = min( bestVal, value) 
+        return bestVal
+
+
+
+
+What the Probability table needs:
+- list out all the squares: 4x4x4
+- list out numbers corresponding to these squares - utility values for each squares (3 sig digits)
+	- each time there is a win, the winner's squares are noted - even if they did not contribute to the 4 in a row
+	- these numbers will be indicated in decimal < 1 --> out of total number of wins
+	- i.e. square 28 was used in 10 wins out of total 15 wins --> will have 0.6667 next to square 28
+- after more iterations of running the game, the probability table should change to indicate that:
+	- 8 squares in the middle have highest frequency of being in a winning game
+	- 8 corner squares have second highest frequency of being in a winning game
+	- etc. 
+- show three seperate tables after 100 trials, 500 trials, and 2000 trials
+- stores all the values for winner board after each game trial, print at 100 trials,... 
+
+
+
+
+Psuedocode for probabilityTable():
+
+
+function probabilityTable():
+
+For (int wins = 0; wins < 100, wins++){
+	check the board for wins;
+	win is recorded on the table
+		out of total games played (should return a decimal number)
+print table after 100 wins
+
+
+For (int wins = 0; wins < 500, wins++){
+	check the board for wins;
+	win is recorded on the table
+		out of total games played (should return a decimal number)
+print table after 500 wins
+
+
+For (int wins = 0; wins < 2000, wins++){
+	check the board for wins;
+	win is recorded on the table
+		out of total games played (should return a decimal number)
+print table after 2000 wins
+
+
+
