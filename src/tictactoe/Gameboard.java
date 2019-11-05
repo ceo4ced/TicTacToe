@@ -2,11 +2,15 @@ package tictactoe;
 
 public class Gameboard {
 	
+	int turn;
+	
 	public enum Cell {E, X, O};
 	
 	public Cell[][][] board;
 	
 	public Gameboard() {
+		
+		turn = 0;
 		
 		board = new Cell[4][4][4];
 		
@@ -46,8 +50,6 @@ public class Gameboard {
 		
 	}
 	
-
-	
 	public Cell[][][] getBoard() {
 		
 		return board;
@@ -72,71 +74,99 @@ public class Gameboard {
 	
 	public void setCell(int dim, int row, int col, Cell value) {
 		
+		turn++;
 		
 		if(isEmpty( dim,  row, col)){
 			
 			board[dim][row][col]= value;
+			
 		}
-		else System.out.println("Can't play there. Choose another location.");
+		else System.out.println(value.toString() + " cannot play there. Choose another location for" + value.toString() + " .");
 	}
 	
-	public String gameResults() {
+	public String checkWinner(Cell value) {
 		
-		for(int i=0;i<board.length;i++) {  //i = dimension j = row k = column
-			for(int j=0;j<board.length;i++) {
-				if(check2DRowWinner(i,j))	// Across Row Winner
-					return "Winner!";
-			}
-			
-			// Along Col Winner
-			for(int k=0;k<board.length;k++) {
-				if(check2DColWinner( i, k)) 
-					return "Winner!";			
-				}
-			
-			// Diagnol Winner
-			if(check2DDiagnolWinner(i))   // All 64 spots are filled
-				return "Winner!";
-			
-			
-		}
+		if(check2DRowWinner() || check2DColWinner() || check2DDimWinner() || check2DDiagnolWinner() || check3DRowDiagnol() || check3DColDiagnol() || check3DDiagnolWinner())
+			return value.toString() + " Won";
 		
-		return null;
+		return "Next player's turn";
 	}
 
-	
-	public boolean check2DRowWinner(int i, int j) {
-		if(board[i][j][0] == board[i][j][1] && board[i][j][1]==board[i][j][2] && board[i][j][2]==board[i][j][3]) 
-			return true;
+	public boolean check2DRowWinner() {
+		
+		for(int dim = 0; dim < board.length; dim++) {// for dim
+			for(int row = 0; row < board.length; row++) { //for row
+//				for(int col = 0; col < board.length; col++) {// for col
+		
+					if(board[dim][row][0] == board[dim][row][1] && board[dim][row][1]==board[dim][row][2] && board[dim][row][2]==board[dim][row][3]) 
+						return true;
+//					}
+				}
+			}
+		
 		return false;
 	}
 	
-	public boolean check2DColWinner(int i, int k) {
-		if(board[i][0][k] == board[i][1][k] && board[i][1][k]==board[i][2][k] && board[i][2][k]==board[i][3][k]) 
+	public boolean check2DColWinner() {
+		for(int dim = 0; dim < board.length; dim++) { // for dim
+			for(int col = 0; col < board.length; col++) { // for col
+				// for row
+		if(board[dim][0][col] == board[dim][1][col] && board[dim][1][col]==board[dim][2][col] && board[dim][2][col]==board[dim][3][col]) 
 			return true;
+			}
+		}
 		return false;
 	}
 	
-	public boolean check2DDiagnolWinner(int i) {
-		if(board[i][0][0] == board[i][1][1] && board[i][1][1]==board[i][2][2] && board[i][2][2]==board[i][3][3] ||
-				board[i][0][3] == board[i][1][2] && board[i][1][2]==board[i][2][1] && board[i][2][1]==board[i][3][0])
+	public boolean check2DDimWinner() {
+		for(int row = 0; row < board.length; row++) {// for row
+			for(int col = 0; col < board.length; col++) {// for col
+				// for dim
+		if(board[0][row][col] == board[1][row][col] && board[1][row][col]==board[2][row][col] && board[2][row][col]==board[3][row][col]) 
 			return true;
+			}
+		}
+		
 		return false;
 	}
 	
-//	public boolean check3DRowWinner(int i, int j, int k) {
-//		if(board[i][j][k]==board[i][j][k] && board[i][j][k] == board[i][j][k] && board[i][j][k]==board[i][j][k])
-//			return true;
-//		return false;
-//	}
-	
-	public boolean check3DColWinner(int i, int j, int k) {
-		if(board[i][j][k]==board[i][j][k] && board[i][j][k] == board[i][j][k] && board[i][j][k]==board[i][j][k])
+	public boolean check2DDiagnolWinner() {
+//		int n = board.length;
+		for(int dim = 0; dim < board.length; dim++) { // for dim
+			// for col & row || col & #-row
+		if(board[dim][0][0] == board[dim][1][1] && board[dim][1][1]==board[dim][2][2] && board[dim][2][2]==board[dim][3][3] ||
+				board[dim][0][3] == board[dim][1][2] && board[dim][1][2]==board[dim][2][1] && board[dim][2][1]==board[dim][3][0])
 			return true;
+		}
+		
 		return false;
 	}
 	
-	public boolean check3DDiagnolWinner(int i, int j, int k) {
+	public boolean check3DRowDiagnol() {
+		for(int row = 0; row < board.length; row++) { // for row
+			// for dim & col || dim & #-col
+		if(board[0][row][0] == board[1][row][1] && board[1][row][1] == board[2][row][2] && board[2][row][2] == board[3][row][3] ||
+				board[0][row][3] == board[1][row][2] && board[1][row][2] == board[2][row][1] && board[2][row][1] == board[3][row][0])
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean check3DColDiagnol() {
+		for(int col = 0; col < board.length; col++) { // for col
+			// for dim & row || dim = #-row
+		if(board[0][0][col] == board[1][1][col] && board[1][1][col] == board[2][2][col] && board[2][2][col] == board[3][3][col] ||
+				board[0][3][col] == board[1][2][col] && board[1][2][col] == board[2][1][col] && board[2][1][col] == board[3][0][col])
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean check3DDiagnolWinner() {
+		// for dim & row & col || dim & #-row & col || dim & #-row & #-col || dim & row & #-col
+		
 		if(board[0][0][0] == board[1][1][1] && board[1][1][1]==board[2][2][2] && board[2][2][2]==board[3][3][3] ||
 				board[0][0][3] == board[1][1][2] && board[1][1][2]==board[2][2][1] && board[2][2][1]==board[3][3][0] ||
 					board[0][3][3] == board[1][2][2] && board[1][2][2]==board[2][1][1] && board[2][1][1]==board[3][0][0] ||
@@ -145,17 +175,30 @@ public class Gameboard {
 		return false;
 	}
 	
-	public boolean check3DRowDiagnol(int i, int j, int k) {
-		if(board[0][j][0] == board[1][j][1] && board[1][j][1] == board[2][j][2] && board[2][j][2] == board[3][j][3] ||
-				board[0][j][3] == board[1][j][2] && board[1][j][2] == board[2][j][1] && board[2][j][1] == board[3][j][0])
-			return true;
+	public boolean checkWinner(int dim, int row, int col) {
+		
+		
+		//check dim win
+		
+			// where am i?
+			// is there 
+		
+		//check row win
+		
+		//check col win
+		
+		//check dim diagnol win
+		
+		//check row diagnol win
+		
+		//check col diagnol win
+		
+		 
+		
+		
 		return false;
+		
 	}
 	
-	public boolean check3DColDiagnol(int i, int j, int k) {
-		if(board[0][0][k] == board[1][1][k] && board[1][1][k] == board[2][2][k] && board[2][2][k] == board[3][3][k] ||
-				board[0][3][k] == board[1][2][k] && board[1][2][k] == board[2][1][k] && board[2][1][k] == board[3][0][k])
-			return true;
-		return false;
-	}	
+	
 }
