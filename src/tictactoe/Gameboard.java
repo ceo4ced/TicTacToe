@@ -72,9 +72,24 @@ public class Gameboard {
 		return false;
 	}
 	
-	public void setCell(int dim, int row, int col, Cell value) {
+	public Cell getEnumCell(String play) {
+		
+		Cell value;
+		
+		if(play.equals("X"))
+			value = Cell.X;
+		
+		else
+			value = Cell.O;
+		
+		return value;
+	}
+	
+	public void setCell(int dim, int row, int col, String play ) {
 		
 		turn++;
+		
+		Cell value = getEnumCell(play);
 		
 		if(isEmpty( dim,  row, col)){
 			
@@ -90,6 +105,14 @@ public class Gameboard {
 			return value.toString() + " Won";
 		
 		return "Next player's turn";
+	}
+	
+	public boolean checkWinner() {
+		
+		if(check2DRowWinner() || check2DColWinner() || check2DDimWinner() || check2DDiagnolWinner() || check3DRowDiagnol() || check3DColDiagnol() || check3DDiagnolWinner())
+			return true;
+		
+		return false;
 	}
 
 	public boolean check2DRowWinner() {
