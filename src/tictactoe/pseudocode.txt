@@ -1,7 +1,7 @@
 Pseudocode for Minimax & Probability Table
 
 HOW MINIMAX WORKS:
-Minimax algorithm uses recursion to search throuhg game-tree
+Minimax algorithm uses recursion to search through game-tree
 The algorithm computes the minimax decision for the current state
 The algorithm performs a depth-first search algorithm for the exploration of the complete game tree
 The algorithm proceeds all the way down terminal node of tree, then backtrack the tree as the recursion
