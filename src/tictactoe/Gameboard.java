@@ -102,10 +102,6 @@ public class Gameboard {
 	
 	public void setCell(int dim, int row, int col, String play ) {
 		
-		if(secondPlayer==null) {
-			setSecondPlayer();
-		}
-		
 		Cell value = getEnumCell(play);
 		
 		if(isEmpty( dim,  row, col)){
@@ -246,30 +242,15 @@ public class Gameboard {
 	}
 	
 //	Sets second player based on first player
-	public void setSecondPlayer() {
-		
-		if(firstPlayer.equals("X")) {
-			secondPlayer = "O";
-		} else {
-			secondPlayer = "X";
-		}
-		
-	}
+
 	
 //	Grabs next player
 	public String getNextPlayer(int turn) {
 		
 		
+
 		
-//		if(turn % 2 == 0 && playerOne == Cell.X) {
-//			return "O";
-//		} else if(turn % 2 == 0 && playerOne != Cell.X) {
-//			return "X";
-//		} else if(turn % 2 != 0 && playerOne == Cell.X) {
-//			return "O";
-//		}
-		
-		return turn % 2 == 0 ? "secondPlayer":"firstPlayer";
+		return turn % 2 == 0 ? "X":"O";
 				}
 	
 	

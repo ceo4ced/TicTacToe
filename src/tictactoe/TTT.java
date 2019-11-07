@@ -33,7 +33,7 @@ public class TTT {
 			col = Integer.parseInt(myLine.substring(4, 5));
 			player = (myLine.substring(6, 7).toUpperCase());
 			board.firstPlayer = player;
-			System.out.println(myLine);
+//			System.out.println(myLine);
 			board.setCell(dim, row, col, player);
 			} else {
 				dim = (int) (Math.random()*3.5);
@@ -41,10 +41,10 @@ public class TTT {
 				col = (int) (Math.random()*3.5);
 				
 				board.setCell(dim, row, col, board.getNextPlayer(board.turn));	
-				TimeUnit.SECONDS.sleep(1);
+				
 				
 			}
-//			
+			
 			System.out.println(board);
 
 
