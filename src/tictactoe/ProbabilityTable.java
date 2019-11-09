@@ -96,6 +96,7 @@ public class ProbabilityTable {
 	}
 	
 	public void fillPQ() {
+		pQ.clear();
 		for (int dim = 0; dim < 4; dim++) {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 4; col++) {
