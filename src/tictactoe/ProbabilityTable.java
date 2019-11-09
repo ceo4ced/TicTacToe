@@ -49,11 +49,9 @@ print table after 2000 wins
 public class ProbabilityTable {
 	public double[][][] table;
 	private static DecimalFormat df3 = new DecimalFormat("##.###");
-	private double gain;
 
 	public ProbabilityTable() {
 		table = new double[4][4][4];
-		gain = 0;
 	}
 
 	public void printTable(int trials) {
