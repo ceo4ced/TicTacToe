@@ -92,7 +92,6 @@ public class ProbabilityTable {
 			}
 		}
 		System.out.println("recorded");
-		fillPQ();
 	}
 	
 	public void fillPQ() {
@@ -100,7 +99,7 @@ public class ProbabilityTable {
 		for (int dim = 0; dim < 4; dim++) {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 4; col++) {
-					String s = table[dim][row][col] + "." + dim + "." + row + "." + col; 
+					String s = table[dim][row][col] + "$" + dim + "$" + row + "$" + col; 
 					pQ.add(s);
 				}
 			}
