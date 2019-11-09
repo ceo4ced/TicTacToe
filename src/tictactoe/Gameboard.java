@@ -64,19 +64,22 @@ public class Gameboard {
 		return result;
 		
 	}
-		
+	
+//	gets board
 	public Cell[][][] getBoard() {
 		
 		return board;
 		
 	}
 
+//	gets the particular cell
 	public Cell getCell(int dim, int row, int col) {
 		
 		return board[dim][row][col];
 		
 	}
 	
+//	Checks if cell is empty
 	public boolean isEmpty(int dim, int row, int col) {
 		
 		if(getCell(dim, row, col)==Cell.E) {
@@ -87,6 +90,7 @@ public class Gameboard {
 		return false;
 	}
 	
+//	get X or O from Enum
 	public Cell getEnumCell() {
 		
 		String player = getNextPlayer();
@@ -102,6 +106,7 @@ public class Gameboard {
 		return value;
 	}
 	
+//	used to set the game board cell
 	public void setCell(int dim, int row, int col ) {
 		
 		Cell value = getEnumCell();
@@ -118,24 +123,7 @@ public class Gameboard {
 
 	}
 	
-//	Used to declare winner with a text string or state it's the next player's turn
-//	public String checkWinner() {
-//		
-//		String player = getNextPlayer(); 
-//		
-//		Cell value = getEnumCell();
-//
-//			if(checkWinner(value)) {
-//				
-//				winner = player;
-//				
-//				return "Player " + value.toString() + " won the game";
-//				
-//			}
-//			
-//		return "Next player's turn";
-//		
-//	}
+
 	
 //	declares winner by running thru seven different winning possibilities **Not Efficient in CPU but efficient in mental energy
 	public boolean checkWinner(Cell value) {
@@ -152,6 +140,7 @@ public class Gameboard {
 		
 	}
 
+//	Checks all the 2D row spaces across one dimension
 	public boolean check2DRowWinner(Cell play) {
 		
 		for(int dim = 0; dim < board.length; dim++) {// for dim
@@ -168,6 +157,7 @@ public class Gameboard {
 		return false;
 	}
 	
+//	Checks all the 2D column spaces in one dimension
 	public boolean check2DColWinner(Cell play) {
 		for(int dim = 0; dim < board.length; dim++) { // for dim
 			for(int col = 0; col < board.length; col++) { // for col
@@ -182,6 +172,7 @@ public class Gameboard {
 		
 	}
 	
+//	Checks all the 2D dimension column spaces in one dimension
 	public boolean check2DDimWinner(Cell play) {
 		for(int row = 0; row < board.length; row++) {// for row
 			for(int col = 0; col < board.length; col++) {// for col
@@ -196,6 +187,7 @@ public class Gameboard {
 		return false;
 	}
 	
+//	Checks all the 2D (up and down) diagnol spaces across multiple dimenions
 	public boolean check2DDiagnolWinner(Cell play) {
 		for(int dim = 0; dim < board.length; dim++) { // for dim
 			if(board[dim][0][0] == board[dim][1][1] && board[dim][1][1]==board[dim][2][2] && board[dim][2][2]==board[dim][3][3] && board[dim][3][3]==play||
@@ -209,6 +201,7 @@ public class Gameboard {
 		
 	}
 	
+//	Checks all the 3D row diagnol spaces
 	public boolean check3DRowDiagnol(Cell play) {
 		for(int row = 0; row < board.length; row++) { // for row
 			if(board[0][row][0] == board[1][row][1] && board[1][row][1] == board[2][row][2] && board[2][row][2] == board[3][row][3] && board[3][row][3]==play ||
@@ -221,6 +214,7 @@ public class Gameboard {
 		return false;
 	}
 	
+//	Checks all the 3D column diagnol spaces
 	public boolean check3DColDiagnol(Cell play) {
 		for(int col = 0; col < board.length; col++) { // for col
 			if(board[0][0][col] == board[1][1][col] && board[1][1][col] == board[2][2][col] && board[2][2][col] == board[3][3][col] && board[3][3][col]==play ||
@@ -233,7 +227,7 @@ public class Gameboard {
 		return false;
 		
 	}
-	
+//	Checks all the 3D column, row and dimension diagnol spaces
 	public boolean check3DDiagnolWinner(Cell play) {
 		// for dim & row & col || dim & #-row & col || dim & #-row & #-col || dim & row & #-col
 		if(board[0][0][0] == board[1][1][1] && board[1][1][1]==board[2][2][2] && board[2][2][2]==board[3][3][3] && board[3][3][3]==play ||

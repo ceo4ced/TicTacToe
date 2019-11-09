@@ -36,9 +36,9 @@ public class TTT {
 		
 		do {
 
-			dim = (int) (Math.random()*3.5);
-			row = (int) (Math.random()*3.5);
-			col = (int) (Math.random()*3.5);
+			dim = (int) (Math.random()*3.4);
+			row = (int) (Math.random()*3.4);
+			col = (int) (Math.random()*3.4);
 			board.setCell(dim, row, col);	
 			
 			System.out.println(board);
