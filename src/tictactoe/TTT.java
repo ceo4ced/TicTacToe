@@ -22,7 +22,11 @@ public class TTT {
 		
 		for(int z = 0; z < run; z++) {
 			board = new Gameboard();
-			runGame(board, table, dim, row, col);		
+			if(z>49) {
+				table.fillPQ();
+			}
+			runGame(board, table, dim, row, col);
+			
 		}
 		
 		table.printTable(run);
@@ -35,11 +39,27 @@ public class TTT {
 
 	public static void runGame(Gameboard board, ProbabilityTable table, int dim, int row, int col) {
 		
+		String parsePQ;
+		
 		do {
-
+			
+			if(table.pQ.peek() != null) {
+				
+			parsePQ = table.pQ.poll();
+			
+			dim =  Integer.parseInt(parsePQ.substring(7, 8));
+			row =  Integer.parseInt(parsePQ.substring(9, 10));
+			col =  Integer.parseInt(parsePQ.substring(11, 12));
+			
+			
+			} else {
+				
 			dim = (int) (Math.random()*3.4);
 			row = (int) (Math.random()*3.4);
 			col = (int) (Math.random()*3.4);
+			
+			}
+			
 			board.setCell(dim, row, col);	
 			
 			System.out.println(board);
