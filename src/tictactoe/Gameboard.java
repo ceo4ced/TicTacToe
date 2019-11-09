@@ -139,8 +139,9 @@ public class Gameboard {
 	
 //	declares winner by running thru seven different winning possibilities **Not Efficient in CPU but efficient in mental energy
 	public boolean checkWinner(Cell value) {
-		if(turn >64) {
+		if(turn >63) {
 			System.out.println("Game is a draw.");
+			return true;
 		}
 		
 		if(check2DRowWinner(value) || check2DColWinner(value) || check2DDimWinner(value) || check2DDiagnolWinner(value) || check3DRowDiagnol(value) || check3DColDiagnol(value) || check3DDiagnolWinner(value)) {
