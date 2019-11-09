@@ -10,6 +10,7 @@ public class TTT {
 
 	public static void main(String[] args) throws InterruptedException {
 		
+		ProbabilityTable table = new ProbabilityTable();
 		Gameboard board;
 		int run;
 		int dim = 0;
@@ -23,16 +24,18 @@ public class TTT {
 		
 		for(int z = 0; z < run; z++) {
 			board = new Gameboard();
-			runGame(board, dim, row, col);
-		
+			runGame(board, table, dim, row, col);		
 		}
+		
+		table.printTable(run);
 		
 //		board = new Gameboard();
 //		runPlayerVsAI( board,  scan,  dim,  row,  col);
+		scan.close();
 		
 	}
 
-	public static void runGame(Gameboard board, int dim, int row, int col) {
+	public static void runGame(Gameboard board, ProbabilityTable table, int dim, int row, int col) {
 		
 		do {
 
@@ -45,6 +48,8 @@ public class TTT {
 
 
 		} while (!board.checkWinner(board.getEnumCell()));
+		
+		table.recordResult(board);
 			
 		
 	}

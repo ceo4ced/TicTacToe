@@ -48,7 +48,7 @@ print table after 2000 wins
  */
 public class ProbabilityTable {
 	public double[][][] table;
-	private static DecimalFormat df3 = new DecimalFormat("#.###");
+	private static DecimalFormat df3 = new DecimalFormat("##.###");
 	private double gain;
 
 	public ProbabilityTable() {
@@ -56,11 +56,11 @@ public class ProbabilityTable {
 		gain = 0;
 	}
 
-	public void printTable() {
+	public void printTable(int trials) {
 		for (int dim = 0; dim < 4; dim++) {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 4; col++) {
-					System.out.print(df3.format(table[dim][row][col]) + " ");
+					System.out.print(df3.format(table[dim][row][col]/trials) + " ");
 				}
 				System.out.println();
 			}
@@ -70,27 +70,25 @@ public class ProbabilityTable {
 
 	public void recordResult(Gameboard g) {
 		// find winning side
-		Cell winner = null;
-		for (int dim = 0; dim < 4; dim++) {
-			for (int row = 0; row < 4; row++) {
-				for (int col = 0; col < 4; col++) {
-					if (g.getCell(dim, row, col) == winner) {
-						table[dim][row][col] += gain;
-					} else {
-						table[dim][row][col] -= gain;
+		Cell winner;
+		if (g.turn <= 63) {
+			if ((g.turn - 1) % 2 == 0) {
+				winner = Cell.X;
+			} else {
+				winner = Cell.O;
+			}
+			for (int dim = 0; dim < 4; dim++) {
+				for (int row = 0; row < 4; row++) {
+					for (int col = 0; col < 4; col++) {
+						if (g.getCell(dim, row, col) == winner) {
+							table[dim][row][col] += 1;
+						} /*else {
+							table[dim][row][col] -= 1;
+						}*/
 					}
 				}
 			}
 		}
-	}
-	
-	public void learn(int trials) {
-		gain = 1/trials;
-		for (int i = 0; i < trials; i++) {
-			Gameboard g = new Gameboard();
-			// make a function that makes the gameboard play itself
-			recordResult(g);
-		}
-		printTable();
+		System.out.println("recorded");
 	}
 }
