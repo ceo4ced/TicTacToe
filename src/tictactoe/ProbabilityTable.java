@@ -74,7 +74,7 @@ public class ProbabilityTable {
 		// find winning side
 		Cell winner;
 		if (g.turn <= 63) {
-			if ((g.turn - 1) % 2 == 0) {
+			if ((g.turn) % 2 == 0) {
 				winner = Cell.X;
 			} else {
 				winner = Cell.O;
