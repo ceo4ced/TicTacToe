@@ -42,11 +42,12 @@ function minimax(board, depth, isMaximizingPlayer):
             bestVal = min( bestVal, value) 
         return bestVal
  */
-public class Trial {
+
+public class BestMove {
 	private Gameboard g;
 	private ProbabilityTable table;
 
-	public Trial() {
+	public BestMove() {
 		g = new Gameboard();
 		table = new ProbabilityTable();
 	}
@@ -103,7 +104,4 @@ public class Trial {
 			return b;
 		}
 	}
-
 }
-
-
