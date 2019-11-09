@@ -48,7 +48,7 @@ print table after 2000 wins
  */
 public class ProbabilityTable {
 	public double[][][] table;
-	private static DecimalFormat df3 = new DecimalFormat("##.###");
+	private static DecimalFormat df3 = new DecimalFormat("#.###");
 
 	public ProbabilityTable() {
 		table = new double[4][4][4];
@@ -58,7 +58,7 @@ public class ProbabilityTable {
 		for (int dim = 0; dim < 4; dim++) {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 4; col++) {
-					System.out.print(df3.format(table[dim][row][col]/trials) + " ");
+					System.out.print(String.format("%.3f", table[dim][row][col]/trials) + " ");
 				}
 				System.out.println();
 			}
