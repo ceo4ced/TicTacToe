@@ -68,7 +68,7 @@ public class Trial {
 	}
 
 	public int minimax(Gameboard board, int depth, boolean isMaximizingPlayer) {
-		if (board.gameResults() == "win") {
+		if (board.winner != "N") {
 			//return valOfBoard 
 		}
 

@@ -12,14 +12,22 @@ public class TTT {
 		// TODO Auto-generated method stub
 		
 		Gameboard board = new Gameboard();
-		int dim, row, col;
+		int run = 1;
+		int dim = 0;
+		int row = 0; 
+		int col = 0;
 		String player = null;
-		// NEED TO ADD IN PUT VARIABLES FOR PLAYING
-		
-		
-//		System.out.println("Your Turn");
 		Scanner scan = new Scanner(System.in);
 	
+		for(int z = 0; z < run; z++) {
+		
+			runGame(board, dim, row, col, scan, player);
+		
+		}
+		
+	}
+
+	public static void runGame(Gameboard board, int dim, int row, int col, Scanner scan, String player) {
 		
 		do {
 			if(board.turn<1) {
@@ -35,12 +43,13 @@ public class TTT {
 			board.firstPlayer = player;
 //			System.out.println(myLine);
 			board.setCell(dim, row, col, player);
+			board.setCell(2, 2, 0, "O");
 			} else {
 				dim = (int) (Math.random()*3.5);
 				row = (int) (Math.random()*3.5);
 				col = (int) (Math.random()*3.5);
 				
-				board.setCell(dim, row, col, board.getNextPlayer(board.turn));	
+				board.setCell(dim, row, col, board.getNextPlayer());	
 				
 				
 			}
@@ -49,11 +58,29 @@ public class TTT {
 
 
 		} while (!board.checkWinner(board.getEnumCell(player)));
+			
 		
+	}
+	
+	public void runPvP(Gameboard board, int dim, int row, int col) {
 		
 		
 		
 		
 	}
-
+	
+	public void runCvC(Gameboard board, int dim, int row, int col) {
+		
+		
+		
+		
+	}
+	
+	public void runTest(Gameboard board, int dim, int row, int col) {
+		
+		
+		
+		
+	}
+	
 }

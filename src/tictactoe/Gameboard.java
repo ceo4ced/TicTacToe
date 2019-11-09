@@ -15,7 +15,7 @@ public class Gameboard {
 	
 	public int turn;
 	public String firstPlayer;
-	String secondPlayer;
+	public String winner = "N";
 	
 	public enum Cell {E, X, O};
 	
@@ -122,6 +122,8 @@ public class Gameboard {
 		Cell value = getEnumCell(play);
 
 			if(checkWinner(value)) {
+				
+				winner = play;
 				
 				return "Player " + value.toString() + " won the game";
 				
@@ -241,14 +243,8 @@ public class Gameboard {
 		
 	}
 	
-//	Sets second player based on first player
-
-	
 //	Grabs next player
-	public String getNextPlayer(int turn) {
-		
-		
-
+	public String getNextPlayer() {
 		
 		return turn % 2 == 0 ? "X":"O";
 				}
