@@ -1,6 +1,7 @@
 package tictactoe;
 
 import java.text.DecimalFormat;
+import java.util.PriorityQueue;
 
 import tictactoe.Gameboard.Cell;
 
@@ -49,9 +50,12 @@ print table after 2000 wins
 public class ProbabilityTable {
 	public double[][][] table;
 	private static DecimalFormat df3 = new DecimalFormat("#.###");
+	public PriorityQueue<String> pQ;
 
 	public ProbabilityTable() {
 		table = new double[4][4][4];
+		pQ = new PriorityQueue<String>(64, new ProbComparator());
+		
 	}
 
 	public void printTable(int trials) {
@@ -88,5 +92,17 @@ public class ProbabilityTable {
 			}
 		}
 		System.out.println("recorded");
+		fillPQ();
+	}
+	
+	public void fillPQ() {
+		for (int dim = 0; dim < 4; dim++) {
+			for (int row = 0; row < 4; row++) {
+				for (int col = 0; col < 4; col++) {
+					String s = table[dim][row][col] + "." + dim + "." + row + "." + col; 
+					pQ.add(s);
+				}
+			}
+		}
 	}
 }
