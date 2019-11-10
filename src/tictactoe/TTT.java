@@ -33,7 +33,7 @@ public class TTT {
 			
 			runGame(board, table, dim, row, col);
 			
-			if(z==499||z==999) {
+			if((z + 1)%500 == 0) {
 				
 				System.out.println("");
 				System.out.println(z+1 + " Games");
