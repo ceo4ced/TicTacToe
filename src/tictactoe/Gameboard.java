@@ -118,7 +118,7 @@ public class Gameboard {
 			turn++;
 		}
 		
-		else System.out.println(value.toString() + " cannot play there. Choose another location for" + value.toString() + " .");
+//		else System.out.println(value.toString() + " cannot play there. Choose another location for" + value.toString() + " .");
 		
 
 	}
@@ -128,7 +128,7 @@ public class Gameboard {
 //	declares winner by running thru seven different winning possibilities **Not Efficient in CPU but efficient in mental energy
 	public boolean checkWinner(Cell value) {
 		if(turn >63) {
-			System.out.println("Game is a draw.");
+//			System.out.println("Game is a draw.");
 			return true;
 		}
 		
@@ -148,7 +148,7 @@ public class Gameboard {
 //				for(int col = 0; col < board.length; col++) {// for col
 		
 				if(board[dim][row][0] == board[dim][row][1] && board[dim][row][1]==board[dim][row][2] && board[dim][row][2]==board[dim][row][3] && board[dim][row][3]==play) { 
-						System.out.println("Row win by "+play.toString()+ " at dim=" + dim +" & row= " + row); 
+//						System.out.println("Row win by "+play.toString()+ " at dim=" + dim +" & row= " + row); 
 						return true;
 					}
 				}
@@ -162,7 +162,7 @@ public class Gameboard {
 		for(int dim = 0; dim < board.length; dim++) { // for dim
 			for(int col = 0; col < board.length; col++) { // for col
 				if(board[dim][0][col] == board[dim][1][col] && board[dim][1][col]==board[dim][2][col] && board[dim][2][col]==board[dim][3][col] && board[dim][3][col]==play) { 
-					System.out.println("Column win by "+play.toString()+ " at dim=" + dim +" & col= " + col);
+//					System.out.println("Column win by "+play.toString()+ " at dim=" + dim +" & col= " + col);
 						return true;
 						}
 			}
@@ -178,7 +178,7 @@ public class Gameboard {
 			for(int col = 0; col < board.length; col++) {// for col
 				if(board[0][row][col] == board[1][row][col] && board[1][row][col]==board[2][row][col] && board[2][row][col]==board[3][row][col] && board[3][row][col]==play) 
 					{
-					System.out.println("Dimensional win by "+play.toString()+ " at row=" + row +" & col= " + col);
+//					System.out.println("Dimensional win by "+play.toString()+ " at row=" + row +" & col= " + col);
 						return true;
 						}
 			}
@@ -192,7 +192,7 @@ public class Gameboard {
 		for(int dim = 0; dim < board.length; dim++) { // for dim
 			if(board[dim][0][0] == board[dim][1][1] && board[dim][1][1]==board[dim][2][2] && board[dim][2][2]==board[dim][3][3] && board[dim][3][3]==play||
 				board[dim][0][3] == board[dim][1][2] && board[dim][1][2]==board[dim][2][1] && board[dim][2][1]==board[dim][3][0] && board[dim][3][0]==play) { //for col & row || col & #-row
-				System.out.println(" 3 Dimensional diagnol win by "+play.toString()+ " at dim=" + dim);
+//				System.out.println(" 3 Dimensional diagnol win by "+play.toString()+ " at dim=" + dim);
 						return true;
 			}
 		}
@@ -206,7 +206,7 @@ public class Gameboard {
 		for(int row = 0; row < board.length; row++) { // for row
 			if(board[0][row][0] == board[1][row][1] && board[1][row][1] == board[2][row][2] && board[2][row][2] == board[3][row][3] && board[3][row][3]==play ||
 				board[0][row][3] == board[1][row][2] && board[1][row][2] == board[2][row][1] && board[2][row][1] == board[3][row][0] && board[3][row][0]==play){ //for dim & col || dim & #-col
-				System.out.println("3D diagnol row win by "+play.toString()+ " at row=" + row);
+//				System.out.println("3D diagnol row win by "+play.toString()+ " at row=" + row);
 						return true;
 			}
 		}
@@ -219,7 +219,7 @@ public class Gameboard {
 		for(int col = 0; col < board.length; col++) { // for col
 			if(board[0][0][col] == board[1][1][col] && board[1][1][col] == board[2][2][col] && board[2][2][col] == board[3][3][col] && board[3][3][col]==play ||
 				board[0][3][col] == board[1][2][col] && board[1][2][col] == board[2][1][col] && board[2][1][col] == board[3][0][col] && board[3][0][col]==play){  // for dim & row || dim = #-row
-				System.out.println("3D column diagnol win by "+play.toString()+ " at col=" + col);
+//				System.out.println("3D column diagnol win by "+play.toString()+ " at col=" + col);
 						return true;
 			}
 		}
@@ -234,7 +234,7 @@ public class Gameboard {
 				board[0][0][3] == board[1][1][2] && board[1][1][2]==board[2][2][1] && board[2][2][1]==board[3][3][0] && board[3][3][0]==play ||
 					board[0][3][3] == board[1][2][2] && board[1][2][2]==board[2][1][1] && board[2][1][1]==board[3][0][0] && board[3][0][0]==play ||
 							board[0][3][0] == board[1][2][1] && board[1][2][1]==board[2][1][2] && board[2][1][2]==board[3][0][3] && board[3][0][3]==play){
-								System.out.println("3D Diagnol win by "+play.toString());
+//								System.out.println("3D Diagnol win by "+play.toString());
 									return true;
 								
 		}

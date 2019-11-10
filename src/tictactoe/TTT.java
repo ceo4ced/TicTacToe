@@ -1,6 +1,7 @@
 package tictactoe;
 
 import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -15,6 +16,8 @@ public class TTT {
 		int dim = 0;
 		int row = 0; 
 		int col = 0;
+		boolean explore = true;
+		
 		Scanner scan = new Scanner(System.in);
 	
 		System.out.println("How many trials to train AI?");
@@ -23,15 +26,24 @@ public class TTT {
 		
 		for(int z = 0; z < run; z++) {
 			board = new Gameboard();
-			if(z>100) {
+			if(z > (run-z)*.5) {
 				
 				table.fillPQ();
 			}
 			
 			runGame(board, table, dim, row, col);
 			
+			if(z==499||z==999) {
+				
+				System.out.println("");
+				System.out.println(z+1 + " Games");
+				table.printTable(run);
+				System.out.println("");
+			}
 		}
 		
+		System.out.println("");
+		System.out.println(run + " Games");
 		table.printTable(run);
 		
 
@@ -45,10 +57,11 @@ public class TTT {
 		
 		do {
 			
+			// change to explore function instead
 			if(table.pQ.peek() != null) {
 				
 			parsePQ = table.pQ.poll();
-			System.out.println(parsePQ.locale.toString());
+//			System.out.println(parsePQ.locale.toString());
 				 
 			
 			dim =  Integer.parseInt(parsePQ.locale.substring(0, 1));  
@@ -56,16 +69,16 @@ public class TTT {
 			col =  Integer.parseInt(parsePQ.locale.substring(4, 5));   
 			
 			} else {
-				
-			dim = (int) (Math.random()*3.4);
-			row = (int) (Math.random()*3.4);
-			col = (int) (Math.random()*3.4);
-			
+	
+			dim = (int) (Math.random()*((3 - 0) + 1)) + 0;
+			row = (int) (Math.random()*((3 - 0) + 1)) + 0;
+			col = (int) (Math.random()*((3 - 0) + 1)) + 0;
+//			System.out.println(dim + "," + row + "," + col);
 			}
 			
 			board.setCell(dim, row, col);	
 			
-			System.out.println(board);
+//			System.out.println(board);
 
 
 		} while (!board.checkWinner(board.getEnumCell()));

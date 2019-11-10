@@ -107,7 +107,7 @@ public class ProbabilityTable {
 				}
 			}
 		}
-		System.out.println("Filled PQ");
+//		System.out.println("Filled PQ");
 	}
 	
 	
