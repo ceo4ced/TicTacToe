@@ -52,13 +52,19 @@ public class BestMove {
 		table = new ProbabilityTable();
 	}
 
-	public Cell findBestMove(Gameboard board) {
-		Cell bestMove = board.getCell(0, 0, 0);
+	public String findBestMove(Gameboard board) {
+		String bestMove = null;
+		int bestVal = 0;
 		for (int dim = 0; dim < 4; dim++) {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 4; col++) {
 					if (board.getCell(dim, row, col) == Cell.E) {
-						
+						Gameboard fake = board;
+						fake.setCell(dim, row, col);
+						int placeholder = minimax(fake, 4, true);
+						if (placeholder > bestVal) {
+							bestMove = dim + "." + row + "." + col;
+						}
 					}
 				}
 			}
@@ -70,23 +76,52 @@ public class BestMove {
 
 	public int minimax(Gameboard board, int depth, boolean isMaximizingPlayer) {
 		if (board.winner != "N") {
+			if (isMaximizingPlayer) {
+				return 1;
+			} else {
+				return -1;
+			}
 			//return valOfBoard 
 		}
-
+		
+		if (depth == 4) {
+			return 0;
+		}
 		if (isMaximizingPlayer) {
 			int bestVal = Integer.MIN_VALUE; 
 			//for each move in board :
-			int value = minimax(board, depth+1, false);
-			bestVal = max( bestVal, value); 
-			return bestVal;
-		} else {
+			for (int dim = 0; dim < 4; dim++) {
+				for (int row = 0; row < 4; row++) {
+					for (int col = 0; col < 4; col++) {
+						if (board.getCell(dim, row, col) == Cell.E) {
+							Gameboard fake = board;
+							fake.setCell(dim, row, col);
+							int value = minimax(fake, depth+1, false);
+							bestVal = max(bestVal, value); 
+							return bestVal;
+						}
+					}
+				}
+			}
 
+		} else {
 			int bestVal = Integer.MAX_VALUE;
 			//for each move in board :
-			int value = minimax(board, depth+1, true);
-			bestVal = min(bestVal, value) ;
-			return bestVal;
+			for (int dim = 0; dim < 4; dim++) {
+				for (int row = 0; row < 4; row++) {
+					for (int col = 0; col < 4; col++) {
+						if (board.getCell(dim, row, col) == Cell.E) {
+							Gameboard fake = board;
+							fake.setCell(dim, row, col);
+							int value = minimax(fake, depth+1, true);
+							bestVal = min(bestVal, value); 
+							return bestVal;
+						}
+					}
+				}
+			}
 		}
+		return 0;
 	}
 
 	private static int min(int a, int b) {
