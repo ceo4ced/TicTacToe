@@ -1,5 +1,6 @@
 package tictactoe;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 
@@ -22,35 +23,37 @@ public class TTT {
 		
 		for(int z = 0; z < run; z++) {
 			board = new Gameboard();
-			if(z>49) {
+			if(z>100) {
+				
 				table.fillPQ();
 			}
+			
 			runGame(board, table, dim, row, col);
 			
 		}
 		
 		table.printTable(run);
 		
-//		board = new Gameboard();
-//		runPlayerVsAI( board,  scan,  dim,  row,  col);
+
 		scan.close();
 		
 	}
 
 	public static void runGame(Gameboard board, ProbabilityTable table, int dim, int row, int col) {
 		
-		String parsePQ;
+		probCell parsePQ = null;
 		
 		do {
 			
 			if(table.pQ.peek() != null) {
 				
 			parsePQ = table.pQ.poll();
+			System.out.println(parsePQ.locale.toString());
+				 
 			
-			dim =  Integer.parseInt(parsePQ.substring(7, 8));
-			row =  Integer.parseInt(parsePQ.substring(9, 10));
-			col =  Integer.parseInt(parsePQ.substring(11, 12));
-			
+			dim =  Integer.parseInt(parsePQ.locale.substring(0, 1));  
+			row =  Integer.parseInt(parsePQ.locale.substring(2, 3));  
+			col =  Integer.parseInt(parsePQ.locale.substring(4, 5));   
 			
 			} else {
 				
