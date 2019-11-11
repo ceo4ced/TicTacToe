@@ -67,9 +67,9 @@ public class TTT {
 			
 			// parse minimax recommended location
 			
-			// dim = minimax dimension
-			// row = minimax row
-			// col = minimax col
+			// dim = Integer.parseInt(minimax.locale.substring(0, 1)); 
+			// row = Integer.parseInt(minimax.locale.substring(2, 3)); 
+			// col = Integer.parseInt(minimax.locale.substring(4, 5)); 
 			
 			
 			} else if(table.pQ.peek() != null) {
