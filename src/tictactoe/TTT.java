@@ -38,7 +38,7 @@ public class TTT {
 
 				System.out.println("");
 				System.out.println(z+1 + " Games");
-				table.printTable(run);
+				table.printTable(z + 1);
 				System.out.println("");
 			}
 		}
