@@ -49,13 +49,9 @@ public class BestMove {
 	private Cell player;
 
 	public BestMove(Gameboard game, ProbabilityTable t) {
-		g = game;
+		g = game.copy();
 		table = t;
-		if (game.turn % 2 == 0) {
-			player = Cell.X;
-		} else {
-			player = Cell.O;
-		}
+		player = game.getEnumCell();
 	}
 
 	public String findBestMove() {
@@ -65,10 +61,11 @@ public class BestMove {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 4; col++) {
 					if (g.getCell(dim, row, col) == Cell.E) {
-						Gameboard fake = g;
+						Gameboard fake = g.copy();
 						fake.setCell(dim, row, col);
-						int placeholder = minimax(fake, 4, true);
+						int placeholder = minimax(fake, 0, true);
 						if (placeholder > bestVal) {
+							bestVal = placeholder;
 							bestMove = dim + "." + row + "." + col;
 						}
 					}
@@ -90,7 +87,7 @@ public class BestMove {
 			// return valOfBoard
 		}
 
-		if (depth == 4) {
+		if (depth == 3) {
 			return 0;
 		}
 		if (isMaximizingPlayer) {
@@ -100,7 +97,7 @@ public class BestMove {
 				for (int row = 0; row < 4; row++) {
 					for (int col = 0; col < 4; col++) {
 						if (board.getCell(dim, row, col) == Cell.E) {
-							Gameboard fake = board;
+							Gameboard fake = board.copy();
 							fake.setCell(dim, row, col);
 							int value = minimax(fake, depth + 1, false);
 							bestVal = max(bestVal, value);
@@ -117,7 +114,7 @@ public class BestMove {
 				for (int row = 0; row < 4; row++) {
 					for (int col = 0; col < 4; col++) {
 						if (board.getCell(dim, row, col) == Cell.E) {
-							Gameboard fake = board;
+							Gameboard fake = board.copy();
 							fake.setCell(dim, row, col);
 							int value = minimax(fake, depth + 1, true);
 							bestVal = min(bestVal, value);
