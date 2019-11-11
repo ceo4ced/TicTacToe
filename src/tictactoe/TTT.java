@@ -57,6 +57,11 @@ public class TTT {
 		
 		do {
 			
+			// CHECK IF SOMEONE COULD WIN BEFORE WE DETERMINE OUR MOVE
+			// RUN 2 IN A WINNING ROW ALGORITHM
+			// INSERT MINIMAX DETERMINATION HERE
+			
+			
 			// change to explore function instead
 			if(table.pQ.peek() != null) {
 				
