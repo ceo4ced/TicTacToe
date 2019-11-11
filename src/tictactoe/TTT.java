@@ -18,6 +18,7 @@ public class TTT {
 		int col = 0;
 		boolean explore = true;
 		
+		
 		Scanner scan = new Scanner(System.in);
 	
 		System.out.println("How many trials to train AI?");
@@ -54,16 +55,24 @@ public class TTT {
 	public static void runGame(Gameboard board, ProbabilityTable table, int dim, int row, int col) {
 		
 		probCell parsePQ = null;
+		String minimax = null;  // using this String until we get the minimax string value
 		
 		do {
 			
+			if(minimax != null) { //CHANGE TO MINIMAX STRING VALUE
+				
 			// CHECK IF SOMEONE COULD WIN BEFORE WE DETERMINE OUR MOVE
 			// RUN 2 IN A WINNING ROW ALGORITHM
 			// INSERT MINIMAX DETERMINATION HERE
 			
+			// parse minimax recommended location
 			
-			// change to explore function instead
-			if(table.pQ.peek() != null) {
+			// dim = minimax dimension
+			// row = minimax row
+			// col = minimax col
+			
+			
+			} else if(table.pQ.peek() != null) {
 				
 			parsePQ = table.pQ.poll();
 //			System.out.println(parsePQ.locale.toString());
