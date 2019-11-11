@@ -67,6 +67,7 @@ public class TTT {
 			
 			// parse minimax recommended location
 			
+			// UNCOMMENT THE CODE BELOW AND SET THE MINIMAX STRING VARIABLE
 			// dim = Integer.parseInt(minimax.locale.substring(0, 1)); 
 			// row = Integer.parseInt(minimax.locale.substring(2, 3)); 
 			// col = Integer.parseInt(minimax.locale.substring(4, 5)); 
