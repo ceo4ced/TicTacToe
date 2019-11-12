@@ -45,13 +45,11 @@ function minimax(board, depth, isMaximizingPlayer):
 
 public class BestMove {
 	private Gameboard g;
-	private ProbabilityTable table;
-	private Cell player;
+	private ProbabilityTable table; //
 
 	public BestMove(Gameboard game, ProbabilityTable t) {
 		g = game.copy();
 		table = t;
-		player = game.getEnumCell();
 	}
 
 	public String findBestMove() {
@@ -60,11 +58,12 @@ public class BestMove {
 		for (int dim = 0; dim < 4; dim++) {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 4; col++) {
-					if (g.getCell(dim, row, col) == Cell.E) {
+					if (g.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
+						// make a copy of the board and test each move on that copy of the board
 						Gameboard fake = g.copy();
 						fake.setCell(dim, row, col);
-						int placeholder = minimax(fake, 0, true);
-						if (placeholder > bestVal) {
+						int placeholder = minimax(fake, 0, true); // try minimax
+						if (placeholder > bestVal) { // if there are any spots that will lead to a win update the values
 							bestVal = placeholder;
 							bestMove = dim + "." + row + "." + col;
 						}
@@ -72,22 +71,20 @@ public class BestMove {
 				}
 			}
 		}
-		// if current move is better than bestMove
-		// bestMove = current move
+		// this returns the best move or null if no move will lead to winning
 		return bestMove;
 	}
 
 	public int minimax(Gameboard board, int depth, boolean isMaximizingPlayer) {
-		if (board.winner != "N") {
-			if (isMaximizingPlayer) {
+		if (board.winner != "N") { // if someone has won
+			if (isMaximizingPlayer) { // if it's the maximizing player, then return 1
 				return 1;
-			} else {
+			} else { // else return -1
 				return -1;
 			}
-			// return valOfBoard
 		}
 
-		if (depth == 8) {
+		if (depth == 8) { // if the board doesn't reach a terminating state within the moves needed
 			return 0;
 		}
 		if (isMaximizingPlayer) {
@@ -96,11 +93,12 @@ public class BestMove {
 			for (int dim = 0; dim < 4; dim++) {
 				for (int row = 0; row < 4; row++) {
 					for (int col = 0; col < 4; col++) {
-						if (board.getCell(dim, row, col) == Cell.E) {
+						if (board.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
+							// make a copy of the board and test each move on that copy of the board
 							Gameboard fake = board.copy();
 							fake.setCell(dim, row, col);
-							int value = minimax(fake, depth + 1, false);
-							bestVal = max(bestVal, value);
+							int value = minimax(fake, depth + 1, false); // call minimax
+							bestVal = max(bestVal, value); // choose best value for maximizing player
 							return bestVal;
 						}
 					}
@@ -113,11 +111,12 @@ public class BestMove {
 			for (int dim = 0; dim < 4; dim++) {
 				for (int row = 0; row < 4; row++) {
 					for (int col = 0; col < 4; col++) {
-						if (board.getCell(dim, row, col) == Cell.E) {
+						if (board.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
+							// make a copy of the board and test each move on that copy of the board
 							Gameboard fake = board.copy();  // IS THIS COPYING THE BOARD AT EACH DIM,ROW,COL ITERATION?  
 							fake.setCell(dim, row, col);
-							int value = minimax(fake, depth + 1, true);
-							bestVal = min(bestVal, value);
+							int value = minimax(fake, depth + 1, true); // call the minimax
+							bestVal = min(bestVal, value); // choose best value for minimizing player
 							return bestVal;
 						}
 					}
