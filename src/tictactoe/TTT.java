@@ -32,7 +32,7 @@ public class TTT {
 				table.fillPQ();
 			}
 
-			runGame(board, table, dim, row, col);
+			runGame(board, table, dim, row, col, z);
 
 			if((z + 1)%500 == 0) {
 
@@ -52,7 +52,7 @@ public class TTT {
 
 	}
 
-	public static void runGame(Gameboard board, ProbabilityTable table, int dim, int row, int col) {
+	public static void runGame(Gameboard board, ProbabilityTable table, int dim, int row, int col, int z) {
 
 		probCell parsePQ = null;
 		String minimax = null;  
@@ -95,7 +95,7 @@ public class TTT {
 
 			board.setCell(dim, row, col);	
 
-			//			System.out.println(board);
+						System.out.println(board);
 
 
 		} while (!board.checkWinner(board.getEnumCell()));
@@ -106,43 +106,6 @@ public class TTT {
 
 
 
-	public static void runPlayerVsAI(Gameboard board, Scanner scan, int dim, int row, int col) {
-
-		System.out.println("Shall we play a game?");
-		System.out.println("Yes or No");
-		String myLine = scan.nextLine();
-		if(myLine =="yes") {
-			System.out.println("Which player am I?");
-			myLine = scan.nextLine();
-			if(myLine == "X") {
-
-			}
-			dim = Integer.parseInt(myLine.substring(0, 1));
-			row = Integer.parseInt(myLine.substring(2,3));
-			col = Integer.parseInt(myLine.substring(4, 5));
-			board.setCell(dim, row, col);
-		} else {}
-
-		do {
-			System.out.println("Player X's turn");
-			myLine = scan.nextLine();
-			dim = Integer.parseInt(myLine.substring(0, 1));
-			row = Integer.parseInt(myLine.substring(2,3));
-			col = Integer.parseInt(myLine.substring(4, 5));
-			board.setCell(dim, row, col);
-			System.out.println(board);
-
-			System.out.println("Player O's turn");
-			myLine = scan.nextLine();
-			dim = Integer.parseInt(myLine.substring(0, 1));
-			row = Integer.parseInt(myLine.substring(2,3));
-			col = Integer.parseInt(myLine.substring(4, 5));
-			board.setCell(dim, row, col);
-			System.out.println(board);
-
-		}while (!board.checkWinner(board.getEnumCell()));
-
-	}
 
 
 }
