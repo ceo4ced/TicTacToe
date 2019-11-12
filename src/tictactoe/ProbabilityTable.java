@@ -48,9 +48,8 @@ For (int wins = 0; wins < 2000, wins++){
 print table after 2000 wins
  */
 public class ProbabilityTable {
-	public double[][][] table;
-	private static DecimalFormat df3 = new DecimalFormat("#.###");
-	public PriorityQueue<probCell> pQ;
+	public double[][][] table; // table to keep track of how many win
+	public PriorityQueue<probCell> pQ; // queue of cells based on best chance to win
 	
 
 	public ProbabilityTable() {
@@ -59,7 +58,7 @@ public class ProbabilityTable {
 		
 	}
 
-	public void printTable(int trials) {
+	public void printTable(int trials) { // method to print the probability table
 		for (int dim = 0; dim < 4; dim++) {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 4; col++) {
@@ -74,18 +73,15 @@ public class ProbabilityTable {
 	public void recordResult(Gameboard g) {
 		// find winning side
 		Cell winner;
-		int dim = 0;
-		int row = 0;
-		int col = 0;
 		if (g.turn <= 63) {
 			if ((g.turn) % 2 == 0) {
 				winner = Cell.X;
 			} else {
 				winner = Cell.O;
 			}
-			for ( dim = 0; dim < 4; dim++) {
-				for ( row = 0; row < 4; row++) {
-					for ( col = 0; col < 4; col++) {
+			for ( int dim = 0; dim < 4; dim++) {
+				for ( int row = 0; row < 4; row++) {
+					for ( int col = 0; col < 4; col++) {
 						if (g.getCell(dim, row, col) == winner) {
 							table[dim][row][col] += 1;
 						} 
@@ -96,7 +92,7 @@ public class ProbabilityTable {
 //		System.out.println(table.toString());
 	}
 	
-	public void fillPQ() {
+	public void fillPQ() { // fills pq with cells
 		pQ.clear();
 		for (int dim = 0; dim < 4; dim++) {
 			for (int row = 0; row < 4; row++) {
