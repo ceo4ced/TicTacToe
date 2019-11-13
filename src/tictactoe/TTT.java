@@ -29,7 +29,7 @@ public class TTT {
 		// read the scanned line
 		String myLine = scan.nextLine();
 		
-		String index[] = new String[4];
+		String index[] = new String[3];
 		int i=0;
 		
 		for(String p: myLine.split("\\s")){
@@ -39,9 +39,9 @@ public class TTT {
 		}
 
 		
-		int print1 = Integer.parseInt(index[1]);
-		int print2 = Integer.parseInt(index[2]);
-		run = Integer.parseInt(index[3]); 
+		int print1 = Integer.parseInt(index[0]);
+		int print2 = Integer.parseInt(index[1]);
+		run = Integer.parseInt(index[2]); 
 
 		// 
 		for(int z = 0; z < run; z++) {
