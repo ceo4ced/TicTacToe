@@ -84,7 +84,7 @@ public class BestMove {
 			}
 		}
 
-		if (depth == 8) { // if the board doesn't reach a terminating state within the moves needed
+		if (depth == 2) { // if the board doesn't reach a terminating state within the moves needed
 			return 0;
 		}
 		if (isMaximizingPlayer) {

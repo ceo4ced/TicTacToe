@@ -1,6 +1,6 @@
 /* This class creates the gameboard, rules, and declares the winner.  
- * 
- * 
+ * Declaring the winner was determined by creating 7 different methods,
+ * each determining the winner in a particular directional type.
  * 
  * 
  * 
@@ -91,7 +91,7 @@ public class Gameboard {
 			result += "\n";
 		}
 
-		System.out.println("\n***********\n");
+//		System.out.println("\n***********\n");
 		return result;
 
 	}

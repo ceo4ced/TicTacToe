@@ -10,6 +10,7 @@ public class TTT {
 
 	public static void main(String[] args) throws InterruptedException {
 
+		// create basic universal variables and new probability table
 		ProbabilityTable table = new ProbabilityTable();
 		Gameboard board;
 		int run;
@@ -17,16 +18,35 @@ public class TTT {
 		int row = 0; 
 		int col = 0;
 		boolean explore = true;
+		
 
 
 		Scanner scan = new Scanner(System.in);
-
-		System.out.println("How many trials to train AI?");
+		
+		// Takes in an int as input
+		System.out.println("Please enter the number of trials to train AI?");
+		
+		// read the scanned line
 		String myLine = scan.nextLine();
-		run = Integer.parseInt(myLine);
+		
+		String index[] = new String[4];
+		int i=0;
+		
+		for(String p: myLine.split("\\s")){
+			
+			index[i] = p;
+					i++;
+		}
 
+		
+		int print1 = Integer.parseInt(index[1]);
+		int print2 = Integer.parseInt(index[2]);
+		run = Integer.parseInt(index[3]); 
+
+		// 
 		for(int z = 0; z < run; z++) {
 			board = new Gameboard();
+			// this is the Explore factor which decreases as z gets larger
 			if(z > (run-z)*.5) {
 
 				table.fillPQ();
@@ -34,7 +54,7 @@ public class TTT {
 
 			runGame(board, table, dim, row, col, z);
 
-			if((z + 1)%500 == 0) {
+			if((z + 1)==print1 || (z + 1) == print2 ) {
 
 				System.out.println("");
 				System.out.println(z+1 + " Games");
@@ -61,7 +81,7 @@ public class TTT {
 
 			BestMove bm = new BestMove(board, table);
 			minimax = bm.findBestMove(); // will return null if no winning within 2 moves
-			if(minimax != null) { //CHANGE TO MINIMAX STRING VALUE
+			if(minimax != null) { 
 
 				// CHECK IF SOMEONE COULD WIN BEFORE WE DETERMINE OUR MOVE
 				// RUN 2 IN A WINNING ROW ALGORITHM
@@ -95,7 +115,7 @@ public class TTT {
 
 			board.setCell(dim, row, col);	
 
-						System.out.println(board);
+//						System.out.println(board);
 
 
 		} while (!board.checkWinner(board.getEnumCell()));
