@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
+import tictactoe.Gameboard.Cell;
+
 
 
 public class TTT {
@@ -76,7 +78,7 @@ public class TTT {
 
 		probCell parsePQ = null;
 		String minimax = null;  
-
+		Cell whoseTurn;
 		do {
 
 			BestMove bm = new BestMove(board,table, 5);
@@ -113,12 +115,14 @@ public class TTT {
 				//			System.out.println(dim + "," + row + "," + col);
 			}
 
+			whoseTurn = board.getPrevCell();
+			
 			board.setCell(dim, row, col);	
 
 //						System.out.println(board);
 
 
-		} while (!board.checkWinner(board.getPrevCell()));
+		} while (!board.checkWinner(whoseTurn));
 
 		table.recordResult(board);
 
