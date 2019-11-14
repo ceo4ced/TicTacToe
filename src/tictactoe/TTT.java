@@ -44,8 +44,8 @@ public class TTT {
 
 				table.fillPQ();
 			}
-
-			runGame(board, table, dim, row, col, z);
+			double random = ((double) z+1)/run;
+			runGame(board, table, dim, row, col, z, random);
 
 			if ((z + 1) == print1 || (z + 1) == print2) {
 
@@ -58,13 +58,13 @@ public class TTT {
 
 		System.out.println("");
 		System.out.println(run + " Games");
-		table.printTable(table.getWins());
+		table.printTable(run);
 
 		scan.close();
 
 	}
 
-	public static void runGame(Gameboard board, ProbabilityTable table, int dim, int row, int col, int z) {
+	public static void runGame(Gameboard board, ProbabilityTable table, int dim, int row, int col, int z, double rando) {
 
 		probCell parsePQ = null;
 		String minimax = null;
@@ -73,36 +73,42 @@ public class TTT {
 
 			BestMove bm = new BestMove(board, table, 3);
 			minimax = bm.findBestMove(); // will return null if no winning within 2 moves
-			if (minimax != null) {
-
-				// CHECK IF SOMEONE COULD WIN BEFORE WE DETERMINE OUR MOVE
-				// RUN 2 IN A WINNING ROW ALGORITHM
-				// INSERT MINIMAX DETERMINATION HERE
-
-				// parse minimax recommended location
-
-				// UNCOMMENT THE CODE BELOW AND SET THE MINIMAX STRING VARIABLE
-				dim = Integer.parseInt(minimax.substring(0, 1));
-				row = Integer.parseInt(minimax.substring(2, 3));
-				col = Integer.parseInt(minimax.substring(4, 5));
-
-			} else if (table.pQ.peek() != null && z > 500) {
-
-				parsePQ = table.pQ.poll();
-				// System.out.println(parsePQ.locale.toString());
-
-				dim = Integer.parseInt(parsePQ.locale.substring(0, 1));
-				row = Integer.parseInt(parsePQ.locale.substring(2, 3));
-				col = Integer.parseInt(parsePQ.locale.substring(4, 5));
-
-			} else {
-
+			if (Math.random() < 1-rando) { // exploring randomly that's less likely with more runs
 				dim = (int) (Math.random() * ((3 - 0) + 1)) + 0;
 				row = (int) (Math.random() * ((3 - 0) + 1)) + 0;
 				col = (int) (Math.random() * ((3 - 0) + 1)) + 0;
-				// System.out.println(dim + "," + row + "," + col);
-			}
+			} else {
 
+				if (minimax != null && z > 400) {
+
+					// CHECK IF SOMEONE COULD WIN BEFORE WE DETERMINE OUR MOVE
+					// RUN 2 IN A WINNING ROW ALGORITHM
+					// INSERT MINIMAX DETERMINATION HERE
+
+					// parse minimax recommended location
+
+					// UNCOMMENT THE CODE BELOW AND SET THE MINIMAX STRING VARIABLE
+					dim = Integer.parseInt(minimax.substring(0, 1));
+					row = Integer.parseInt(minimax.substring(2, 3));
+					col = Integer.parseInt(minimax.substring(4, 5));
+
+				} else if (table.pQ.peek() != null && z > 500) {
+
+					parsePQ = table.pQ.poll();
+					// System.out.println(parsePQ.locale.toString());
+
+					dim = Integer.parseInt(parsePQ.locale.substring(0, 1));
+					row = Integer.parseInt(parsePQ.locale.substring(2, 3));
+					col = Integer.parseInt(parsePQ.locale.substring(4, 5));
+
+				} else {
+
+					dim = (int) (Math.random() * ((3 - 0) + 1)) + 0;
+					row = (int) (Math.random() * ((3 - 0) + 1)) + 0;
+					col = (int) (Math.random() * ((3 - 0) + 1)) + 0;
+					// System.out.println(dim + "," + row + "," + col);
+				}
+			}
 			board.setCell(dim, row, col);
 
 			// System.out.println(board);
