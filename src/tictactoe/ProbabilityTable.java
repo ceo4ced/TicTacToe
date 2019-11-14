@@ -1,6 +1,5 @@
 package tictactoe;
 
-import java.text.DecimalFormat;
 import java.util.PriorityQueue;
 
 import tictactoe.Gameboard.Cell;
@@ -90,7 +89,6 @@ public class ProbabilityTable {
 				}
 			}
 		}
-		wins++;
 //		System.out.println(table.toString());
 	}
 	public int getWins() {

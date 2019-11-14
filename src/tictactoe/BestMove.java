@@ -82,16 +82,13 @@ public class BestMove {
 						Gameboard fake = game.copy();
 						fake.setCell(dim, row, col);
 						fake.checkWinner(fake.getPrevCell());
-						int placeholder = minimax(fake, 0, true); // try minimax
+						int placeholder = maxMove(fake, 0); // try minimax
 						if (placeholder > bestVal) { // if there are any spots that will lead to a win update the values
 							bestVal = placeholder;
 							bestMove = dim + "." + row + "." + col;
 						}
 					}
 				}
-			}
-			if (dim == 3) {
-				System.out.print("reached te end");
 			}
 		}
 		// this returns the best move or null if no move will lead to winning
@@ -126,7 +123,7 @@ public class BestMove {
 		if (board.winner != "N") { // if someone has won
 			if (isMaximizingPlayer) { // if it's the maximizing player, then return 1
 				return this.depth - depth;
-			} else { // else return -1
+			} else {
 				return depth - this.depth;
 			}
 		}
@@ -194,9 +191,9 @@ public class BestMove {
 				int col = Integer.parseInt(parsePQ.locale.substring(4, 5));
 				Gameboard test = board.copy();
 				test.setCell(dim, row, col);
-				test.checkWinner(test.getEnumCell());
+				test.checkWinner(test.getPrevCell());
 				if (test.winner != "N") {
-					return -1;
+					return depth - this.depth;
 				}
 				int value = maxMove(test, depth + 1);
 				bestVal = min(bestVal, value);
@@ -227,9 +224,9 @@ public class BestMove {
 				int col = Integer.parseInt(parsePQ.locale.substring(4, 5));
 				Gameboard test = board.copy();
 				test.setCell(dim, row, col);
-				test.checkWinner(test.getEnumCell());
+				test.checkWinner(test.getPrevCell());
 				if (test.winner != "N") {
-					return 1;
+					return this.depth - depth;
 				}
 				int value = miniMove(test, depth + 1);
 				bestVal = max(bestVal, value);
