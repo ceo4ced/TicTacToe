@@ -80,7 +80,7 @@ public class BestMove {
 					if (game.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
 						// make a copy of the board and test each move on that copy of the board
 						if (findThree(dim, row, col, game.getEnumCell())) {
-							findThree(dim,row,col, game.getEnumCell());
+							//findThree(dim,row,col, game.getEnumCell());
 							return (dim + "." + row + "." + col);
 						}
 						
