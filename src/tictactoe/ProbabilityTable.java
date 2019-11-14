@@ -91,7 +91,9 @@ public class ProbabilityTable {
 		}
 //		System.out.println(table.toString());
 	}
-	
+	public double getVal(int dim, int row, int col) {
+		return table[dim][row][col];
+	}
 	public void fillPQ() { // fills pq with cells
 		pQ.clear();
 		for (int dim = 0; dim < 4; dim++) {

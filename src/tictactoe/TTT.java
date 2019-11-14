@@ -79,7 +79,7 @@ public class TTT {
 
 		do {
 
-			BestMove bm = new BestMove(board, table);
+			BestMove bm = new BestMove(board,table, 5);
 			minimax = bm.findBestMove(); // will return null if no winning within 2 moves
 			if(minimax != null) { 
 
@@ -118,7 +118,7 @@ public class TTT {
 //						System.out.println(board);
 
 
-		} while (!board.checkWinner(board.getEnumCell()));
+		} while (!board.checkWinner(board.getPrevCell()));
 
 		table.recordResult(board);
 
