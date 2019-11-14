@@ -73,7 +73,7 @@ public class TTT {
 
 		do {
 
-			BestMove bm = new BestMove(board, table, 5);
+			BestMove bm = new BestMove(board, table, 3);
 			minimax = bm.findBestMove(); // will return null if no winning within 2 moves
 			if (minimax != null) {
 
@@ -88,7 +88,7 @@ public class TTT {
 				row = Integer.parseInt(minimax.substring(2, 3));
 				col = Integer.parseInt(minimax.substring(4, 5));
 
-			} else if (table.pQ.peek() != null) {
+			} else if (table.pQ.peek() != null && z > 500) {
 
 				parsePQ = table.pQ.poll();
 				// System.out.println(parsePQ.locale.toString());

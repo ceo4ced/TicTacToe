@@ -73,20 +73,9 @@ public class BestMove {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 4; col++) {
 					if (game.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
-						// see if this spot leads to a three in a row
-						if (findThree(dim, row, col, game.getEnumCell())) {
-							// if so play it
-							return (dim + "." + row + "." + col);
-						} else if (findThree(dim, row, col, game.getPrevCell())) {
-							// otherwise block any opponents chances of winning
-							return (dim + "." + row + "." + col);
-						}
-						// if there is a space where you can get more than one 3 in a row, go for it
-						if (findTwo(dim, row,col, game.getEnumCell()) > 1) {
-							return (dim + "." + row + "." + col);
-						} else if (findTwo(dim, row, col, game.getPrevCell()) > 1) {
-							// block your opponent from beating you with two spaces they can get 4 in a row
-							return (dim + "." + row + "." + col);
+						String special = specialCase(dim, row, col);
+						if (special != null) {
+							return special;
 						}
 						
 						// make a copy of the board and test each move on that copy of the board
@@ -101,6 +90,9 @@ public class BestMove {
 					}
 				}
 			}
+			if (dim == 3) {
+				System.out.print("reached te end");
+			}
 		}
 		// this returns the best move or null if no move will lead to winning
 
@@ -111,7 +103,7 @@ public class BestMove {
 	}
 
 	public String specialCase(int dim, int row, int col) {
-		// see if this spot leads to a three in a row
+		// see if this spot leads to a win
 		if (findThree(dim, row, col, game.getEnumCell())) {
 			// if so play it
 			return (dim + "." + row + "." + col);
@@ -119,6 +111,7 @@ public class BestMove {
 			// otherwise block any opponents chances of winning
 			return (dim + "." + row + "." + col);
 		}
+		
 		// see if this spot leads to more than one 3 in a row
 		if (findTwo(dim, row,col, game.getEnumCell()) > 1) {
 			// if so play it
@@ -132,9 +125,9 @@ public class BestMove {
 	public int minimax(Gameboard board, int depth, boolean isMaximizingPlayer) {
 		if (board.winner != "N") { // if someone has won
 			if (isMaximizingPlayer) { // if it's the maximizing player, then return 1
-				return getBoardValue(board, board.getEnumCell());
+				return this.depth - depth;
 			} else { // else return -1
-				return (-1 * getBoardValue(board, board.getEnumCell()));
+				return depth - this.depth;
 			}
 		}
 
@@ -150,7 +143,7 @@ public class BestMove {
 						if (board.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
 							// make a copy of the board and test each move on that copy of the board
 							if (findThree(dim, row, col, board.getEnumCell())) {
-								return getBoardValue(board, board.getEnumCell());
+								return this.depth - depth;
 							}
 							Gameboard fake = board.copy();
 							fake.setCell(dim, row, col);
@@ -172,7 +165,7 @@ public class BestMove {
 						if (board.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
 							// make a copy of the board and test each move on that copy of the board
 							if (findThree(dim, row, col, board.getEnumCell())) {
-								return (-1 * getBoardValue(board, board.getEnumCell()));
+								return depth - this.depth;
 							}
 							Gameboard fake = board.copy(); // IS THIS COPYING THE BOARD AT EACH DIM,ROW,COL ITERATION?
 							fake.setCell(dim, row, col);
