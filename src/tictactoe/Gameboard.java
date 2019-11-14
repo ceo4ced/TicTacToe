@@ -136,7 +136,19 @@ public class Gameboard {
 
 		return value;
 	}
+	public Cell getPrevCell() {
+		String player = getNextPlayer();
 
+		Cell value;
+
+		if(player.equals("X"))
+			value = Cell.O;
+
+		else
+			value = Cell.X;
+
+		return value;
+	}
 	//	used to set the game board cell
 	public void setCell(int dim, int row, int col ) {
 

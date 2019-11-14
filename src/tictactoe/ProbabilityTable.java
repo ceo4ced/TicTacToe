@@ -50,19 +50,20 @@ print table after 2000 wins
 public class ProbabilityTable {
 	public double[][][] table; // table to keep track of how many win
 	public PriorityQueue<probCell> pQ; // queue of cells based on best chance to win
-	
+	private int wins;
 
 	public ProbabilityTable() {
 		table = new double[4][4][4];
 		pQ = new PriorityQueue<probCell>(64, new ProbComparator());
-		
+		wins = 0;
+
 	}
 
 	public void printTable(int trials) { // method to print the probability table
 		for (int dim = 0; dim < 4; dim++) {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 4; col++) {
-					System.out.print(String.format("%.3f", table[dim][row][col]/trials) + " ");
+					System.out.print(String.format("%.3f", table[dim][row][col] / trials) + " ");
 				}
 				System.out.println();
 			}
@@ -79,37 +80,38 @@ public class ProbabilityTable {
 			} else {
 				winner = Cell.O;
 			}
-			for ( int dim = 0; dim < 4; dim++) {
-				for ( int row = 0; row < 4; row++) {
-					for ( int col = 0; col < 4; col++) {
+			for (int dim = 0; dim < 4; dim++) {
+				for (int row = 0; row < 4; row++) {
+					for (int col = 0; col < 4; col++) {
 						if (g.getCell(dim, row, col) == winner) {
 							table[dim][row][col] += 1;
-						} 
+						}
 					}
 				}
 			}
 		}
+		wins++;
 //		System.out.println(table.toString());
 	}
-	
+	public int getWins() {
+		return wins;
+	}
+	public double getVal(int dim, int row, int col) {
+		return table[dim][row][col];
+	}
+
 	public void fillPQ() { // fills pq with cells
 		pQ.clear();
 		for (int dim = 0; dim < 4; dim++) {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 4; col++) {
-					probCell s = new probCell(table[dim][row][col],  dim + "," + row + "," + col); 
+					probCell s = new probCell(table[dim][row][col], dim + "," + row + "," + col);
 					pQ.add(s);
-					
+
 				}
 			}
 		}
 //		System.out.println("Filled PQ");
 	}
-	
-	
-	
-	
-	
-	
-	
+
 }
