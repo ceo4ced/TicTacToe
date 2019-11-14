@@ -59,31 +59,37 @@ public class BestMove {
 		String bestMove = null;
 		int bestVal = 0;
 		/*
-		if (table.pQ.peek() != null) {
-			for (probCell parsePQ : table.pQ) {
-				int dim =  Integer.parseInt(parsePQ.locale.substring(0, 1));  
-				int row =  Integer.parseInt(parsePQ.locale.substring(2, 3));  
-				int col =  Integer.parseInt(parsePQ.locale.substring(4, 5));
-				Gameboard test = game.copy();
-				test.setCell(dim, row, col);
-				test.checkWinner(test.getEnumCell());
-				int placeholder = maxMove(test, 0); // try minimax
-				if (placeholder > bestVal) { // if there are any spots that will lead to a win update the values
-					bestVal = placeholder;
-					bestMove = dim + "." + row + "." + col;
-				}
-			}			
-		} /*else { */
+		 * if (table.pQ.peek() != null) { for (probCell parsePQ : table.pQ) { int dim =
+		 * Integer.parseInt(parsePQ.locale.substring(0, 1)); int row =
+		 * Integer.parseInt(parsePQ.locale.substring(2, 3)); int col =
+		 * Integer.parseInt(parsePQ.locale.substring(4, 5)); Gameboard test =
+		 * game.copy(); test.setCell(dim, row, col);
+		 * test.checkWinner(test.getEnumCell()); int placeholder = maxMove(test, 0); //
+		 * try minimax if (placeholder > bestVal) { // if there are any spots that will
+		 * lead to a win update the values bestVal = placeholder; bestMove = dim + "." +
+		 * row + "." + col; } } } /*else {
+		 */
 		for (int dim = 0; dim < 4; dim++) {
 			for (int row = 0; row < 4; row++) {
 				for (int col = 0; col < 4; col++) {
 					if (game.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
-						// make a copy of the board and test each move on that copy of the board
+						// see if this spot leads to a three in a row
 						if (findThree(dim, row, col, game.getEnumCell())) {
-							findThree(dim,row,col, game.getEnumCell());
+							// if so play it
+							return (dim + "." + row + "." + col);
+						} else if (findThree(dim, row, col, game.getPrevCell())) {
+							// otherwise block any opponents chances of winning
+							return (dim + "." + row + "." + col);
+						}
+						// if there is a space where you can get more than one 3 in a row, go for it
+						if (findTwo(dim, row,col, game.getEnumCell()) > 1) {
+							return (dim + "." + row + "." + col);
+						} else if (findTwo(dim, row, col, game.getPrevCell()) > 1) {
+							// block your opponent from beating you with two spaces they can get 4 in a row
 							return (dim + "." + row + "." + col);
 						}
 						
+						// make a copy of the board and test each move on that copy of the board
 						Gameboard fake = game.copy();
 						fake.setCell(dim, row, col);
 						fake.checkWinner(fake.getPrevCell());
@@ -104,6 +110,25 @@ public class BestMove {
 		return bestMove;
 	}
 
+	public String specialCase(int dim, int row, int col) {
+		// see if this spot leads to a three in a row
+		if (findThree(dim, row, col, game.getEnumCell())) {
+			// if so play it
+			return (dim + "." + row + "." + col);
+		} else if (findThree(dim, row, col, game.getPrevCell())) {
+			// otherwise block any opponents chances of winning
+			return (dim + "." + row + "." + col);
+		}
+		// see if this spot leads to more than one 3 in a row
+		if (findTwo(dim, row,col, game.getEnumCell()) > 1) {
+			// if so play it
+			return (dim + "." + row + "." + col);
+		} else if (findTwo(dim, row, col, game.getPrevCell()) > 1) {
+			// otherwise prevent any opponents from taking a prime spot
+			return (dim + "." + row + "." + col);
+		}
+		return null;
+	}
 	public int minimax(Gameboard board, int depth, boolean isMaximizingPlayer) {
 		if (board.winner != "N") { // if someone has won
 			if (isMaximizingPlayer) { // if it's the maximizing player, then return 1
@@ -124,6 +149,9 @@ public class BestMove {
 					for (int col = 0; col < 4; col++) {
 						if (board.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
 							// make a copy of the board and test each move on that copy of the board
+							if (findThree(dim, row, col, board.getEnumCell())) {
+								return getBoardValue(board, board.getEnumCell());
+							}
 							Gameboard fake = board.copy();
 							fake.setCell(dim, row, col);
 							fake.checkWinner(fake.getPrevCell());
@@ -143,7 +171,10 @@ public class BestMove {
 					for (int col = 0; col < 4; col++) {
 						if (board.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
 							// make a copy of the board and test each move on that copy of the board
-							Gameboard fake = board.copy();  // IS THIS COPYING THE BOARD AT EACH DIM,ROW,COL ITERATION?  
+							if (findThree(dim, row, col, board.getEnumCell())) {
+								return (-1 * getBoardValue(board, board.getEnumCell()));
+							}
+							Gameboard fake = board.copy(); // IS THIS COPYING THE BOARD AT EACH DIM,ROW,COL ITERATION?
 							fake.setCell(dim, row, col);
 							fake.checkWinner(fake.getPrevCell());
 							int value = minimax(fake, depth + 1, true); // call the minimax
@@ -165,9 +196,9 @@ public class BestMove {
 		int bestVal = Integer.MAX_VALUE;
 		if (table.pQ.peek() != null) {
 			for (probCell parsePQ : table.pQ) {
-				int dim =  Integer.parseInt(parsePQ.locale.substring(0, 1));  
-				int row =  Integer.parseInt(parsePQ.locale.substring(2, 3));  
-				int col =  Integer.parseInt(parsePQ.locale.substring(4, 5));
+				int dim = Integer.parseInt(parsePQ.locale.substring(0, 1));
+				int row = Integer.parseInt(parsePQ.locale.substring(2, 3));
+				int col = Integer.parseInt(parsePQ.locale.substring(4, 5));
 				Gameboard test = board.copy();
 				test.setCell(dim, row, col);
 				test.checkWinner(test.getEnumCell());
@@ -177,26 +208,15 @@ public class BestMove {
 				int value = maxMove(test, depth + 1);
 				bestVal = min(bestVal, value);
 				return bestVal;
-			}			
-		} /* else {
-			for (int dim = 0; dim < 4; dim++) {
-				for (int row = 0; row < 4; row++) {
-					for (int col = 0; col < 4; col++) {
-						if (board.getCell(dim, row, col) == Cell.E) {
-							Gameboard test = board.copy();
-							test.setCell(dim, row, col);
-							test.checkWinner(test.getEnumCell());
-							if (test.winner != "N") {
-								return -1;
-							}
-							int value = maxMove(test, depth + 1);
-							bestVal = min(bestVal, value);
-							return bestVal;
-						}
-					}
-				}
-			}	
-		} */
+			}
+		} /*
+		 * else { for (int dim = 0; dim < 4; dim++) { for (int row = 0; row < 4; row++)
+		 * { for (int col = 0; col < 4; col++) { if (board.getCell(dim, row, col) ==
+		 * Cell.E) { Gameboard test = board.copy(); test.setCell(dim, row, col);
+		 * test.checkWinner(test.getEnumCell()); if (test.winner != "N") { return -1; }
+		 * int value = maxMove(test, depth + 1); bestVal = min(bestVal, value); return
+		 * bestVal; } } } } }
+		 */
 		return bestVal;
 	}
 
@@ -209,9 +229,9 @@ public class BestMove {
 
 		if (table.pQ.peek() != null) {
 			for (probCell parsePQ : table.pQ) {
-				int dim =  Integer.parseInt(parsePQ.locale.substring(0, 1));  
-				int row =  Integer.parseInt(parsePQ.locale.substring(2, 3));  
-				int col =  Integer.parseInt(parsePQ.locale.substring(4, 5));
+				int dim = Integer.parseInt(parsePQ.locale.substring(0, 1));
+				int row = Integer.parseInt(parsePQ.locale.substring(2, 3));
+				int col = Integer.parseInt(parsePQ.locale.substring(4, 5));
 				Gameboard test = board.copy();
 				test.setCell(dim, row, col);
 				test.checkWinner(test.getEnumCell());
@@ -221,26 +241,14 @@ public class BestMove {
 				int value = miniMove(test, depth + 1);
 				bestVal = max(bestVal, value);
 				return bestVal;
-			}			
-		} /* else {
-			for (int dim = 0; dim < 4; dim++) {
-				for (int row = 0; row < 4; row++) {
-					for (int col = 0; col < 4; col++) {
-						if (board.getCell(dim, row, col) == Cell.E) {
-							Gameboard test = board.copy();
-							test.setCell(dim, row, col);
-							test.checkWinner(test.getEnumCell());
-							if (test.winner != "N") {
-								return 1;
-							}
-							int value = miniMove(test, depth + 1);
-							bestVal = max(bestVal, value);
-							return bestVal;
-						}
-					}
-				}
 			}
-		}
+		} /*
+		 * else { for (int dim = 0; dim < 4; dim++) { for (int row = 0; row < 4; row++)
+		 * { for (int col = 0; col < 4; col++) { if (board.getCell(dim, row, col) ==
+		 * Cell.E) { Gameboard test = board.copy(); test.setCell(dim, row, col);
+		 * test.checkWinner(test.getEnumCell()); if (test.winner != "N") { return 1; }
+		 * int value = miniMove(test, depth + 1); bestVal = max(bestVal, value); return
+		 * bestVal; } } } } }
 		 */
 		return bestVal;
 	}
@@ -262,14 +270,16 @@ public class BestMove {
 		}
 		return value;
 	}
+
 	private Cell getOpponent(Cell player) {
 		if (player == Cell.O) {
 			return Cell.X;
 		}
 		return Cell.O;
 	}
+
 	private boolean findThree(int dim, int row, int col, Cell player) {
-		if (count2DRow(dim, row, player) == 3 && count2DRow(dim,row, getOpponent(player)) == 0) {
+		if (count2DRow(dim, row, player) == 3) {
 			return true;
 		} else if (count2DCol(dim, col, player) == 3) {
 			return true;
@@ -300,138 +310,209 @@ public class BestMove {
 		}
 		return false;
 	}
-	 
-	 	public int count2DRow(int dim, int row, Cell player) {
-	 		int count = 0;
-	 		for (int col = 0; col < 4; col++) {
-	 			if (game.getCell(dim, row, col) == getOpponent(player)) {
-	 				return -1;
-	 			} else if (game.getCell(dim, row, col) == player) {
-	 				count++;
-	 			}
-	 		}
-	 		return count;
-	 	}
-	 
-	 	public int count2DCol(int dim, int col, Cell player) {
-	 		int count = 0;
-	 		for (int row = 0; row < 4; row++) {   
-	 			if (game.getCell(dim, row, col) == player) {
-	 				count++;
-	 			}
-	 		}
-	 		return count;
-	 	}
-	 
-	 	public int count2DDim(int row, int col, Cell player) {
-	 		int count = 0;
-	 		for (int dim = 0; dim < 4; dim++) {  
-	 			if (game.getCell(dim, row, col) == player) {
-	 				count++;
-	 			}
-	 		}
-	 		return count;
-	 	}
-	 
-	 	public int count2DDiagnolA(int dim, Cell player) {
-	 		int count = 0;
-	 		for (int row = 0; row < 4; row++) {   
-	 			if (game.getCell(dim, row, row) == player) {
-	 				count++;
-	 			}
-	 		}
-	 		return count;
-	 	}
-	 
-	 	public int count2DDiagnolB(int dim, Cell player) {
-	 		int count = 0;
-	 		for (int row = 0; row < 4; row++) {   
-	 			if (game.getCell(dim, row, 3 - row) == player) {
-	 				count++;
-	 			}
-	 		}
-	 		return count;
-	 	}
-	 
-	 	public int count3DRowDiagnolA(int row, Cell player) {
-	 		int count = 0;
-	 		for (int dim = 0; dim < 4; dim++) {  
-	 			if (game.getCell(dim, row, dim) == player) {
-	 				count++;
-	 			}
-	 		}
-	 		return count;
-	 	}
-	 
-	 	public int count3DRowDiagnolB(int row, Cell player) {
-	 		int count = 0;
-	 		for (int dim = 0; dim < 4; dim++) { 
-	 			if (game.getCell(dim, row, 3 - dim) == player) {
-	 				count++;
-	 			}
-	 		}
-	 		return count;
-	 	}
-	 
-	 	public int count3DColDiagnolA(int col, Cell player) {
-	 		int count = 0;
-	 		for (int row = 0; row < 4; row++) { 
-	 			if (game.getCell(row, row, col) == player) {
-	 				count++;
-	 			}
-	 		}
-	 		return count;
-	 	}
-	 
-	 	public int count3DColDiagnolB(int col, Cell player) {
-	 		int count = 0;
-	 		for (int row = 0; row < 4; row++) {  
-	 			if (game.getCell(row, 3 - row, col) == player) {
-	 				count++;
-	 			}
-	 		}
-	 		return count;
-	 	}
-	 
-	 	public int count3DDiagnolA(Cell player) {
-	 		int count = 0;
-	 		for (int row = 0; row < 4; row++) {   
-	 			if (game.getCell(row, row, row) == player) {
-	 				count++;
-	 			}
-	 		}
-	 		return count;
-	 	}
-	 
-	 	public int count3DDiagnolB(Cell player) {
-	 		int count = 0;
-	 		for (int row = 0; row < 4; row++) {   
-	 			if (game.getCell(row, row, 3 - row) == player) {
-	 				count++;
-	 			}
-	 		}
-	 		return count;
-	 	}
-	 
-	 	public int count3DDiagnolC(Cell player) {
-	 		int count = 0;
-	 		for (int row = 0; row < 4; row++) {   
-	 			if (game.getCell(row, 3 - row, 3 - row) == player) {
-	 				count++;
-	 			}
-	 		}
-	 		return count;
-	 	}
-	 
-	 	public int count3DDiagnolD(Cell player) {
-	 		int count = 0;
-	 		for (int row = 0; row < 4; row++) {   
-	 			if (game.getCell(row, 3 - row, row) == player) {
-	 				count++;
-	 			}
-	 		}
-	 		return count;
-	 	}
+
+	private int findTwo(int dim, int row, int col, Cell player) {
+		int count = 0;
+		if (count2DRow(dim, row, player) == 2) {
+			count++;
+		} 
+		if (count2DCol(dim, col, player) == 2) {
+			count++;
+		} 
+		if (count2DDim(row, col, player) == 2) {
+			count++;
+		} 
+		if (count2DDiagnolA(dim, player) == 2) {
+			count++;
+		} 
+		if (count2DDiagnolB(dim, player) == 2) {
+			count++;
+		} 
+		if (count3DRowDiagnolA(row, player) == 2) {
+			count++;
+		} 
+		if (count3DRowDiagnolB(row, player) == 2) {
+			count++;
+		} 
+		if (count3DRowDiagnolA(row, player) == 2) {
+			count++;
+		} 
+		if (count3DColDiagnolA(col, player) == 2) {
+			count++;
+		} 
+		if (count3DColDiagnolA(col, player) == 2) {
+			count++;
+		} 
+		if (count3DDiagnolA(player) == 2) {
+			count++;
+		} 
+		if (count3DDiagnolB(player) == 2) {
+			count++;
+		} 
+		if (count3DDiagnolC(player) == 2) {
+			count++;
+		} 
+		if (count3DDiagnolD(player) == 2) {
+			count++;
+		}
+		return count;
+	}
+
+	public int count2DRow(int dim, int row, Cell player) {
+		int count = 0;
+		for (int col = 0; col < 4; col++) {
+			if (game.getCell(dim, row, col) == getOpponent(player)) {
+				return -1;
+			} else if (game.getCell(dim, row, col) == player) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int count2DCol(int dim, int col, Cell player) {
+		int count = 0;
+		for (int row = 0; row < 4; row++) {
+			if (game.getCell(dim, row, col) == getOpponent(player)) {
+				return -1;
+			} else if (game.getCell(dim, row, col) == player) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int count2DDim(int row, int col, Cell player) {
+		int count = 0;
+		for (int dim = 0; dim < 4; dim++) {
+			if (game.getCell(dim, row, col) == getOpponent(player)) {
+				return -1;
+			} else if (game.getCell(dim, row, col) == player) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int count2DDiagnolA(int dim, Cell player) {
+		int count = 0;
+		for (int row = 0; row < 4; row++) {
+			if (game.getCell(dim, row, row) == getOpponent(player)) {
+				return -1;
+			} else if (game.getCell(dim, row, row) == player) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int count2DDiagnolB(int dim, Cell player) {
+		int count = 0;
+		for (int row = 0; row < 4; row++) {
+			if (game.getCell(dim, row, 3 - row) == getOpponent(player)) {
+				return -1;
+			} else if (game.getCell(dim, row, 3 - row) == player) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int count3DRowDiagnolA(int row, Cell player) {
+		int count = 0;
+		for (int dim = 0; dim < 4; dim++) {
+			if (game.getCell(dim, row, dim) == getOpponent(player)) {
+				return -1;
+			} else if (game.getCell(dim, row, dim) == player) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int count3DRowDiagnolB(int row, Cell player) {
+		int count = 0;
+		for (int dim = 0; dim < 4; dim++) {
+			if (game.getCell(dim, row, 3 - dim) == getOpponent(player)) {
+				return -1;
+			} else if (game.getCell(dim, row, 3 - dim) == player) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int count3DColDiagnolA(int col, Cell player) {
+		int count = 0;
+		for (int row = 0; row < 4; row++) {
+			if (game.getCell(row, row, col) == getOpponent(player)) {
+				return -1;
+			} else if (game.getCell(row, row, col) == player) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int count3DColDiagnolB(int col, Cell player) {
+		int count = 0;
+		for (int row = 0; row < 4; row++) {
+			if (game.getCell(row, 3 - row, col) == getOpponent(player)) {
+				return -1;
+			} else if (game.getCell(row, 3 - row, col) == player) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int count3DDiagnolA(Cell player) {
+		int count = 0;
+		for (int row = 0; row < 4; row++) {
+			if (game.getCell(row, row, row) == getOpponent(player)) {
+				return -1;
+			} else if (game.getCell(row, row, row) == player) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int count3DDiagnolB(Cell player) {
+		int count = 0;
+		for (int row = 0; row < 4; row++) {
+			if (game.getCell(row, row, 3 - row) == getOpponent(player)) {
+				return -1;
+			} else if (game.getCell(row, row, 3 - row) == player) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int count3DDiagnolC(Cell player) {
+		int count = 0;
+		for (int row = 0; row < 4; row++) {
+			if (game.getCell(row, 3 - row, 3 - row) == getOpponent(player)) {
+				return -1;
+			} else if (game.getCell(row, 3 - row, 3 - row) == player) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int count3DDiagnolD(Cell player) {
+		int count = 0;
+		for (int row = 0; row < 4; row++) {
+			if (game.getCell(row, 3 - row, row) == getOpponent(player)) {
+				return -1;
+			} else if (game.getCell(row, 3 - row, row) == player) {
+				count++;
+			}
+		}
+		return count;
+	}
 
 	private static int min(int a, int b) {
 		if (a < b) {
