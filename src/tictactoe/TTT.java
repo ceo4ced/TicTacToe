@@ -1,7 +1,6 @@
 package tictactoe;
 
-import java.util.Arrays;
-import java.util.Random;
+
 import java.util.Scanner;
 
 public class TTT {
@@ -15,7 +14,6 @@ public class TTT {
 		int dim = 0;
 		int row = 0;
 		int col = 0;
-		boolean explore = true;
 
 		Scanner scan = new Scanner(System.in);
 
