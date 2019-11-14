@@ -51,14 +51,14 @@ public class TTT {
 
 				System.out.println("");
 				System.out.println(z + 1 + " Games");
-				table.printTable(z + 1);
+				table.printTable(table.getWins());
 				System.out.println("");
 			}
 		}
 
 		System.out.println("");
 		System.out.println(run + " Games");
-		table.printTable(run);
+		table.printTable(table.getWins());
 
 		scan.close();
 
@@ -70,16 +70,16 @@ public class TTT {
 		String minimax = null;
 
 		do {
-
-			BestMove bm = new BestMove(board, table, 3);
-			minimax = bm.findBestMove(); // will return null if no winning within 2 moves
+			
 			if (Math.random() < 1-rando) { // exploring randomly that's less likely with more runs
 				dim = (int) (Math.random() * ((3 - 0) + 1)) + 0;
 				row = (int) (Math.random() * ((3 - 0) + 1)) + 0;
 				col = (int) (Math.random() * ((3 - 0) + 1)) + 0;
 			} else {
-
-				if (minimax != null && z > 400) {
+				// BestMove constructor takes in the gameboard, probability table and the depth that minimax should look at
+				BestMove bm = new BestMove(board, table, 4);
+				minimax = bm.findBestMove(); // will return null if no winning within depth 
+				if (minimax != null && z > 1000) {
 
 					// CHECK IF SOMEONE COULD WIN BEFORE WE DETERMINE OUR MOVE
 					// RUN 2 IN A WINNING ROW ALGORITHM
@@ -92,7 +92,7 @@ public class TTT {
 					row = Integer.parseInt(minimax.substring(2, 3));
 					col = Integer.parseInt(minimax.substring(4, 5));
 
-				} else if (table.pQ.peek() != null && z > 500) {
+				}  if (table.pQ.peek() != null && z > 250) {
 
 					parsePQ = table.pQ.poll();
 					// System.out.println(parsePQ.locale.toString());
@@ -114,7 +114,8 @@ public class TTT {
 			// System.out.println(board);
 
 		} while (!board.checkWinner(board.getPrevCell()));
-
+		//System.out.println(board);
+		//System.out.println(board.winner);
 		table.recordResult(board);
 
 	}

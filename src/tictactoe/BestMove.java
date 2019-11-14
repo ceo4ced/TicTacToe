@@ -1,5 +1,8 @@
 package tictactoe;
 
+import java.util.Iterator;
+import java.util.PriorityQueue;
+
 import tictactoe.Gameboard.Cell;
 
 /*
@@ -47,58 +50,70 @@ public class BestMove {
 	private Gameboard game;
 	private ProbabilityTable table;
 	private int depth;
+	private Iterator<probCell> pQ;
 
 	public BestMove(Gameboard g, ProbabilityTable t, int d) {
 		game = g.copy();
 		depth = d;
 		table = t;
+		pQ = table.pQ.iterator();
 
 	}
 
 	public String findBestMove() {
 		String bestMove = null;
 		int bestVal = 0;
-		/*
-		 * if (table.pQ.peek() != null) { for (probCell parsePQ : table.pQ) { int dim =
-		 * Integer.parseInt(parsePQ.locale.substring(0, 1)); int row =
-		 * Integer.parseInt(parsePQ.locale.substring(2, 3)); int col =
-		 * Integer.parseInt(parsePQ.locale.substring(4, 5)); Gameboard test =
-		 * game.copy(); test.setCell(dim, row, col);
-		 * test.checkWinner(test.getEnumCell()); int placeholder = maxMove(test, 0); //
-		 * try minimax if (placeholder > bestVal) { // if there are any spots that will
-		 * lead to a win update the values bestVal = placeholder; bestMove = dim + "." +
-		 * row + "." + col; } } } /*else {
-		 */
-		for (int dim = 0; dim < 4; dim++) {
-			for (int row = 0; row < 4; row++) {
-				for (int col = 0; col < 4; col++) {
-					if (game.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
-						String special = specialCase(dim, row, col);
-						if (special != null) {
-							return special;
-						}
-						
-						// make a copy of the board and test each move on that copy of the board
-						Gameboard fake = game.copy();
-						fake.setCell(dim, row, col);
-						fake.checkWinner(fake.getPrevCell());
-						int placeholder = maxMove(fake, 0); // try minimax
-						if (placeholder > bestVal) { // if there are any spots that will lead to a win update the values
-							bestVal = placeholder;
-							bestMove = dim + "." + row + "." + col;
+		if (table.pQ.peek() != null) {
+			do {
+				probCell parsePQ = pQ.next();
+				int dim = Integer.parseInt(parsePQ.locale.substring(0, 1));
+				int row = Integer.parseInt(parsePQ.locale.substring(2, 3));
+				int col = Integer.parseInt(parsePQ.locale.substring(4, 5));
+				if (game.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
+					String special = specialCase(dim, row, col);
+					if (special != null) {
+						return special;
+					}
+
+					// make a copy of the board and test each move on that copy of the board
+					Gameboard fake = game.copy();
+					fake.setCell(dim, row, col);
+					fake.checkWinner(fake.getPrevCell());
+					int placeholder = maxMove(fake, 0); // try minimax
+					if (placeholder > bestVal) { // if there are any spots that will lead to a win update the values
+						bestVal = placeholder;
+						bestMove = dim + "." + row + "." + col;
+					}
+				}
+			} while (pQ.hasNext());
+		} else {
+
+			for (int dim = 0; dim < 4; dim++) { 
+				for (int row = 0; row < 4; row++) { 
+					for (int col = 0; col < 4; col++) { 
+						if (game.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
+							String special = specialCase(dim, row, col);
+							if (special != null) {
+								return special;
+							}
+
+							// make a copy of the board and test each move on that copy of the board
+							Gameboard fake = game.copy();
+							fake.setCell(dim, row, col);
+							fake.checkWinner(fake.getPrevCell());
+							int placeholder = maxMove(fake, 0); // try minimax
+							if (placeholder > bestVal) { // if there are any spots that will lead to a win update the values
+								bestVal = placeholder;
+								bestMove = dim + "." + row + "." + col;
+							}
 						}
 					}
 				}
 			}
 		}
-		// this returns the best move or null if no move will lead to winning
-
-		if (bestMove != null) {
-			System.out.println("minimax works");
-		}
 		return bestMove;
 	}
-
+	
 	public String specialCase(int dim, int row, int col) {
 		// see if this spot leads to a win
 		if (findThree(dim, row, col, game.getEnumCell())) {
@@ -108,9 +123,9 @@ public class BestMove {
 			// otherwise block any opponents chances of winning
 			return (dim + "." + row + "." + col);
 		}
-		
+
 		// see if this spot leads to more than one 3 in a row
-		if (findTwo(dim, row,col, game.getEnumCell()) > 1) {
+		if (findTwo(dim, row, col, game.getEnumCell()) > 1) {
 			// if so play it
 			return (dim + "." + row + "." + col);
 		} else if (findTwo(dim, row, col, game.getPrevCell()) > 1) {
@@ -119,12 +134,15 @@ public class BestMove {
 		}
 		return null;
 	}
+
 	public int minimax(Gameboard board, int depth, boolean isMaximizingPlayer) {
 		if (board.winner != "N") { // if someone has won
 			if (isMaximizingPlayer) { // if it's the maximizing player, then return 1
-				return this.depth - depth;
+				return 1;
+				// return this.depth - depth;
 			} else {
-				return depth - this.depth;
+				return -1;
+				// return depth - this.depth;
 			}
 		}
 
@@ -140,7 +158,8 @@ public class BestMove {
 						if (board.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
 							// make a copy of the board and test each move on that copy of the board
 							if (findThree(dim, row, col, board.getEnumCell())) {
-								return this.depth - depth;
+								return 1;
+								// return this.depth - depth;
 							}
 							Gameboard fake = board.copy();
 							fake.setCell(dim, row, col);
@@ -162,7 +181,8 @@ public class BestMove {
 						if (board.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
 							// make a copy of the board and test each move on that copy of the board
 							if (findThree(dim, row, col, board.getEnumCell())) {
-								return depth - this.depth;
+								return -1;
+								// return depth - this.depth;
 							}
 							Gameboard fake = board.copy(); // IS THIS COPYING THE BOARD AT EACH DIM,ROW,COL ITERATION?
 							fake.setCell(dim, row, col);
@@ -305,43 +325,43 @@ public class BestMove {
 		int count = 0;
 		if (count2DRow(dim, row, player) == 2) {
 			count++;
-		} 
+		}
 		if (count2DCol(dim, col, player) == 2) {
 			count++;
-		} 
+		}
 		if (count2DDim(row, col, player) == 2) {
 			count++;
-		} 
+		}
 		if (count2DDiagnolA(dim, player) == 2) {
 			count++;
-		} 
+		}
 		if (count2DDiagnolB(dim, player) == 2) {
 			count++;
-		} 
+		}
 		if (count3DRowDiagnolA(row, player) == 2) {
 			count++;
-		} 
+		}
 		if (count3DRowDiagnolB(row, player) == 2) {
 			count++;
-		} 
+		}
 		if (count3DRowDiagnolA(row, player) == 2) {
 			count++;
-		} 
+		}
 		if (count3DColDiagnolA(col, player) == 2) {
 			count++;
-		} 
+		}
 		if (count3DColDiagnolA(col, player) == 2) {
 			count++;
-		} 
+		}
 		if (count3DDiagnolA(player) == 2) {
 			count++;
-		} 
+		}
 		if (count3DDiagnolB(player) == 2) {
 			count++;
-		} 
+		}
 		if (count3DDiagnolC(player) == 2) {
 			count++;
-		} 
+		}
 		if (count3DDiagnolD(player) == 2) {
 			count++;
 		}

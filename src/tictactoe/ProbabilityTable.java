@@ -72,13 +72,8 @@ public class ProbabilityTable {
 
 	public void recordResult(Gameboard g) {
 		// find winning side
-		Cell winner;
 		if (g.turn <= 63) {
-			if ((g.turn) % 2 == 0) {
-				winner = Cell.X;
-			} else {
-				winner = Cell.O;
-			}
+			Cell winner = g.getPrevCell();
 			for (int dim = 0; dim < 4; dim++) {
 				for (int row = 0; row < 4; row++) {
 					for (int col = 0; col < 4; col++) {
@@ -88,6 +83,7 @@ public class ProbabilityTable {
 					}
 				}
 			}
+			wins++;
 		}
 //		System.out.println(table.toString());
 	}

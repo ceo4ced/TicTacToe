@@ -176,6 +176,11 @@ public class Gameboard {
 		}
 
 		if(check2DRowWinner(value) || check2DColWinner(value) || check2DDimWinner(value) || check2DDiagnolWinner(value) || check3DRowDiagnol(value) || check3DColDiagnol(value) || check3DDiagnolWinner(value)) {
+			if (value.equals(Cell.O)) {
+				winner = "O";
+			} else {
+				winner = "X";
+			}
 			return true;
 		}
 
