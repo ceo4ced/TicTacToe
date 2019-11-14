@@ -293,21 +293,21 @@ public class Gameboard {
 	}
 
 	//	Use this method to determine if there's three in a row
-	public void detectThree() {
-
-		for(int dim = 0; dim < board.length; dim++) {// for dim
-			for(int row = 0; row < board.length; row++) { //for row
-				//				for(int col = 0; col < board.length; col++) {// for col
-
-				if(board[dim][row][0] == board[dim][row][1] && board[dim][row][1]==board[dim][row][2] && board[dim][row][2]==board[dim][row][3]) { 
-					//						System.out.println("Row win by "+play.toString()+ " at dim=" + dim +" & row= " + row); 
-
-				}
-			}
-		}
-
-
-	}
+//	public void detectThree() {
+//
+//		for(int dim = 0; dim < board.length; dim++) {// for dim
+//			for(int row = 0; row < board.length; row++) { //for row
+//				//				for(int col = 0; col < board.length; col++) {// for col
+//
+//				if(board[dim][row][0] == board[dim][row][1] && board[dim][row][1]==board[dim][row][2] && board[dim][row][2]==board[dim][row][3]) { 
+//					//						System.out.println("Row win by "+play.toString()+ " at dim=" + dim +" & row= " + row); 
+//
+//				}
+//			}
+//		}
+//
+//
+//	}
 
 
 }

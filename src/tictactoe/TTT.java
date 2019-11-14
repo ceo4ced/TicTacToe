@@ -115,7 +115,7 @@ public class TTT {
 				//			System.out.println(dim + "," + row + "," + col);
 			}
 
-			whoseTurn = board.getPrevCell();
+			whoseTurn = board.getEnumCell();
 			
 			board.setCell(dim, row, col);	
 
