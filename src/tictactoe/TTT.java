@@ -5,12 +5,14 @@ import java.util.Scanner;
 
 public class TTT {
 
+	static int run;
+	
 	public static void main(String[] args) throws InterruptedException {
 
 		// create basic universal variables and new probability table
 		ProbabilityTable table = new ProbabilityTable();
 		Gameboard board;
-		int run;
+//		int run;
 		int dim = 0;
 		int row = 0;
 		int col = 0;
@@ -79,7 +81,7 @@ public class TTT {
 				// BestMove constructor takes in the gameboard, probability table and the depth that minimax should look at
 				BestMove bm = new BestMove(board, table, 4);
 				minimax = bm.findBestMove(); // will return null if no winning within depth 
-				if (minimax != null && z > 1000) {
+				if (minimax != null && z > run * .75) {
 
 					// CHECK IF SOMEONE COULD WIN BEFORE WE DETERMINE OUR MOVE
 					// RUN 2 IN A WINNING ROW ALGORITHM
@@ -92,7 +94,7 @@ public class TTT {
 					row = Integer.parseInt(minimax.substring(2, 3));
 					col = Integer.parseInt(minimax.substring(4, 5));
 
-				}  if (table.pQ.peek() != null && z > 250) {
+				}   if (table.pQ.peek() != null && z > run * .25) {
 
 					parsePQ = table.pQ.poll();
 					// System.out.println(parsePQ.locale.toString());
@@ -100,7 +102,7 @@ public class TTT {
 					dim = Integer.parseInt(parsePQ.locale.substring(0, 1));
 					row = Integer.parseInt(parsePQ.locale.substring(2, 3));
 					col = Integer.parseInt(parsePQ.locale.substring(4, 5));
-
+//
 				} else {
 
 					dim = (int) (Math.random() * ((3 - 0) + 1)) + 0;

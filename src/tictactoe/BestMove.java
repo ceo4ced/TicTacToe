@@ -63,57 +63,33 @@ public class BestMove {
 	public String findBestMove() {
 		String bestMove = null;
 		int bestVal = 0;
-		if (table.pQ.peek() != null) {
-			do {
-				probCell parsePQ = pQ.next();
-				int dim = Integer.parseInt(parsePQ.locale.substring(0, 1));
-				int row = Integer.parseInt(parsePQ.locale.substring(2, 3));
-				int col = Integer.parseInt(parsePQ.locale.substring(4, 5));
-				if (game.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
-					String special = specialCase(dim, row, col);
-					if (special != null) {
-						return special;
-					}
 
-					// make a copy of the board and test each move on that copy of the board
-					Gameboard fake = game.copy();
-					fake.setCell(dim, row, col);
-					fake.checkWinner(fake.getPrevCell());
-					int placeholder = maxMove(fake, 0); // try minimax
-					if (placeholder > bestVal) { // if there are any spots that will lead to a win update the values
-						bestVal = placeholder;
-						bestMove = dim + "." + row + "." + col;
-					}
-				}
-			} while (pQ.hasNext());
-		} else {
+		for (int dim = 0; dim < 4; dim++) {
+			for (int row = 0; row < 4; row++) {
+				for (int col = 0; col < 4; col++) {
+					if (game.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
+						String special = specialCase(dim, row, col);
+						if (special != null) {
+							return special;
+						}
 
-			for (int dim = 0; dim < 4; dim++) { 
-				for (int row = 0; row < 4; row++) { 
-					for (int col = 0; col < 4; col++) { 
-						if (game.getCell(dim, row, col) == Cell.E) { // if this spot hasn't been played
-							String special = specialCase(dim, row, col);
-							if (special != null) {
-								return special;
-							}
-
-							// make a copy of the board and test each move on that copy of the board
-							Gameboard fake = game.copy();
-							fake.setCell(dim, row, col);
-							fake.checkWinner(fake.getPrevCell());
-							int placeholder = maxMove(fake, 0); // try minimax
-							if (placeholder > bestVal) { // if there are any spots that will lead to a win update the values
-								bestVal = placeholder;
-								bestMove = dim + "." + row + "." + col;
-							}
+						// make a copy of the board and test each move on that copy of the board
+						Gameboard fake = game.copy();
+						fake.setCell(dim, row, col);
+						fake.checkWinner(fake.getPrevCell());
+						int placeholder = maxMove(fake, 0); // try minimax
+						if (placeholder > bestVal) { // if there are any spots that will lead to a win update the values
+							bestVal = placeholder;
+							bestMove = dim + "." + row + "." + col;
 						}
 					}
 				}
 			}
+
 		}
 		return bestMove;
 	}
-	
+
 	public String specialCase(int dim, int row, int col) {
 		// see if this spot leads to a win
 		if (findThree(dim, row, col, game.getEnumCell())) {
@@ -220,13 +196,13 @@ public class BestMove {
 				return bestVal;
 			}
 		} /*
-		 * else { for (int dim = 0; dim < 4; dim++) { for (int row = 0; row < 4; row++)
-		 * { for (int col = 0; col < 4; col++) { if (board.getCell(dim, row, col) ==
-		 * Cell.E) { Gameboard test = board.copy(); test.setCell(dim, row, col);
-		 * test.checkWinner(test.getEnumCell()); if (test.winner != "N") { return -1; }
-		 * int value = maxMove(test, depth + 1); bestVal = min(bestVal, value); return
-		 * bestVal; } } } } }
-		 */
+			 * else { for (int dim = 0; dim < 4; dim++) { for (int row = 0; row < 4; row++)
+			 * { for (int col = 0; col < 4; col++) { if (board.getCell(dim, row, col) ==
+			 * Cell.E) { Gameboard test = board.copy(); test.setCell(dim, row, col);
+			 * test.checkWinner(test.getEnumCell()); if (test.winner != "N") { return -1; }
+			 * int value = maxMove(test, depth + 1); bestVal = min(bestVal, value); return
+			 * bestVal; } } } } }
+			 */
 		return bestVal;
 	}
 
@@ -253,13 +229,13 @@ public class BestMove {
 				return bestVal;
 			}
 		} /*
-		 * else { for (int dim = 0; dim < 4; dim++) { for (int row = 0; row < 4; row++)
-		 * { for (int col = 0; col < 4; col++) { if (board.getCell(dim, row, col) ==
-		 * Cell.E) { Gameboard test = board.copy(); test.setCell(dim, row, col);
-		 * test.checkWinner(test.getEnumCell()); if (test.winner != "N") { return 1; }
-		 * int value = miniMove(test, depth + 1); bestVal = max(bestVal, value); return
-		 * bestVal; } } } } }
-		 */
+			 * else { for (int dim = 0; dim < 4; dim++) { for (int row = 0; row < 4; row++)
+			 * { for (int col = 0; col < 4; col++) { if (board.getCell(dim, row, col) ==
+			 * Cell.E) { Gameboard test = board.copy(); test.setCell(dim, row, col);
+			 * test.checkWinner(test.getEnumCell()); if (test.winner != "N") { return 1; }
+			 * int value = miniMove(test, depth + 1); bestVal = max(bestVal, value); return
+			 * bestVal; } } } } }
+			 */
 		return bestVal;
 	}
 
